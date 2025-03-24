@@ -21,7 +21,7 @@ public class MllpSslConfig {
 	SSLContextParameters sslContextParameters = new SSLContextParameters();
 	
 	KeyStoreParameters keyStoreParameters = new KeyStoreParameters();
-	keyStoreParameters.setResource("file:/Users/mjtrac/test.jks");
+	keyStoreParameters.setResource("classpath:test.jks");
 	//keyStoreParameters.setPassword("tnuWaA6oF1Be");//Mirth43 generated keystore password
 	keyStoreParameters.setPassword("password");
 
