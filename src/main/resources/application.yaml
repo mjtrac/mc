@@ -14,8 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+        
+spring:
+  dataSource:
+    url: jdbc:sqlite:mydata.db
+    driver-class-name: org.sqlite.JDBC
 
 camel:
+  micrometer:
+    enabled: true
+    route-metrics: true
   netty:
     ssl:
       keystore:

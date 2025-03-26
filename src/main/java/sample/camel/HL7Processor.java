@@ -17,7 +17,10 @@ public class HL7Processor {
 	    String pid31="XXX";
 	    try {
 		pid31 = t.get("PID-3-1");
-		exchange.getIn().setHeader("PID31",pid31);
+		t.set("PID-3-1","new");
+		exchange.getIn().setHeader("PID31a",pid31);
+		exchange.getIn().setBody(m);
+		exchange.getIn().setHeader("PID31b",t.get("PID-3-1"));
 	    } catch (Exception e) {
 		System.err.println("Error getting pid31 from message body (hl7)");
 	    }

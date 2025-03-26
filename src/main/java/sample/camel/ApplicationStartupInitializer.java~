@@ -1,0 +1,19 @@
+package sample.camel;
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import javax.annotation.PostConstruct;
+
+@Component
+public class ApplicationStartupInitializer {
+    
+    @Autowired
+    private CamelContext camelContext;
+    
+    @PostConstruct
+    public void initializeDatabase() {
+	ProducerTemplate template = camelContext.createProducerTemplate();
+	template.sendBody("direct:init", null);
+    }
+}
