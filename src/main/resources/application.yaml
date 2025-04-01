@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#logging:
+#  level:
+#    org.apache.camel.component.mllp: DEBUG
+
 management:
   endpoints:
     web:
@@ -48,5 +52,6 @@ camel:
 
     # which directory(s) to scan for routes/route-configurations which can be xml, yaml or java files
     #routes-include-pattern: classpath:myroutes/*
-    routes-include-pattern: classpath:sslroute/*,classpath:myroutes/*
+    routes-include-pattern: classpath:forwardroute/*
+    #,classpath:myroutes/*
     
