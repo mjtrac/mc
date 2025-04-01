@@ -24,6 +24,12 @@ public class HL7Processor {
 	    } catch (Exception e) {
 		System.err.println("Error getting pid31 from message body (hl7)");
 	    }
+	    try {
+		exchange.setProperty("CamelMllpAcknowledgementString",
+				     "MSH|^~\\&|RS|RF|SA|SF|20250328140203.319-0700||ACK^A01|MSG00001A|P|2.5.1\rMSA|AA|MSG00001");
+	    } catch (Exception e) {
+		System.err.println("Error setting property CamelMllpAcknowledgementString");
+	    }
 	    return pid31;
     }
 }

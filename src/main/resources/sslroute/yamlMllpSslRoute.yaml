@@ -19,7 +19,7 @@
 - route:
     id: yamlMllpSslRoute
     from:
-      uri: "mllp://0?hostname=localhost&port=15679&sslContextParameters=#mysslContextParameters"
+      uri: "mllp://0?hostname=localhost&port=15679&sslContextParameters=#mysslContextParameters&autoAck=true&receiveTimeout=5000"
       steps:
         - unmarshal:
             hl7: {}
@@ -28,13 +28,41 @@
         - setHeader:
             name: originalBody
             simple: "${body}"
-        - log: "RESP?: ${body}"
         - log: "ORIG: ${header.originalBody}"
+        - log: "HEADERS: ${headers}"
+        - log: "CamelMllpAcknowledgement: "
+        - log: "${exchangeProperty.CamelMllpAcknowledgement}"
+        - log: "CamelMllpAcknowledgementString: "
+        - log: "${exchangeProperty.CamelMllpAcknowledgementString}"
         - setBody:
             simple: "INSERT INTO mytable (name, value) VALUES ('body', '${header.originalBody}')"
         - to: "jdbc:dataSource"
-
-#        - bean:
-#            ref: "HL7Processor"
-#            method: "extractPatientId"
-#        - log: "PID31: ${header.PID31} ALL: ${headers}"
+        - setBody:
+            simple: "${header.originalBody.toString()}"
+        - log: "CLASS2: "
+        - log: "${body.class.name}"
+        - log: "BODY2 restored after db insert:"
+        - log: "${body}"
+# We set the properties for the ack in HL7Processor,
+# and the ack sent to 15679 is what we set
+        - bean:
+            ref: "HL7Processor"
+            method: "extractPatientId"
+        - log: "PID31: ${header.PID31} "
+        - log: "HEADERS: ${headers}"
+# But we don't get the returned value from this to: in the exchange's body
+# so we will try Gemini's approach of using an inner exchange.
+        - setBody:
+            simple: "${header.originalBody.toString()}"
+        - log: "BODY BEFORE SEND TO 15680: ${body.toString()}"
+        - to:
+            uri: "mllp://0?hostname=localhost&port=15680"
+# This message forward operation is successful, but I can't find
+# the returned acknowledgement.  And turning autoAck to false
+# in the initial send causes the whole thing to fail.
+        - log: "CamelMllpAcknowledgement:"
+        - log: "${exchangeProperty.CamelMllpAcknowledgement}"
+        - log: "CamelMllpAcknowledgementString:"
+        - log: "${exchangeProperty.CamelMllpAcknowledgementString}"
+        - to:
+            uri: "log:hello?showAllProperties=true"
