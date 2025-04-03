@@ -22,8 +22,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
-        
+        include:
+          - "prometheus"
+          - "camelroutes"
+
 spring:
   dataSource:
     url: jdbc:sqlite:mydata.db
@@ -49,9 +51,11 @@ camel:
 
     # dump routes as XML (routes are coded in different DSLs but can be dumped as XML)
     dump-routes: true
-
     # which directory(s) to scan for routes/route-configurations which can be xml, yaml or java files
     #routes-include-pattern: classpath:myroutes/*
     routes-include-pattern: classpath:forwardroute/*
     #,classpath:myroutes/*
+
+
     
+
