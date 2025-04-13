@@ -1,19 +1,3 @@
-#
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 #logging:
 #  level:
 #    org.apache.camel.component.mllp: DEBUG
@@ -25,6 +9,7 @@ management:
         include:
           - "prometheus"
           - "camelroutes"
+          - "metrics"
 
 spring:
   dataSource:
@@ -46,16 +31,20 @@ camel:
     # keep Camel running
     main-run-controller: true
 
-    # verbose summary so you can see the pairing of routes and routes configurations
-    startup-summary-level: verbose
-
-    # dump routes as XML (routes are coded in different DSLs but can be dumped as XML)
     dump-routes: true
-    # which directory(s) to scan for routes/route-configurations which can be xml, yaml or java files
+    #routes-reload-enabled: true
+    #routes-reload-directory: src/main/resources/forwardroute
+    #routes-reload-pattern: classpath:camel/*
+    
+# which directory(s) to scan for routes/route-configurations which can be xml, yaml or java files
     #routes-include-pattern: classpath:myroutes/*
-    routes-include-pattern: classpath:forwardroute/*
+    #routes-include-pattern: classpath:forwardroute/*
+    #routes-include-pattern: classpath:sslroute/*
+    routes-include-pattern: classpath:ssl2/*
     #,classpath:myroutes/*
 
-
-    
-
+mllp:
+  inbound:
+    port: 15679
+  outbound:
+    port: 15678

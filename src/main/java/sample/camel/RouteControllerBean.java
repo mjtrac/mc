@@ -11,6 +11,7 @@ import org.apache.camel.model.ModelCamelContext;
 import org.apache.camel.spi.RouteController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class RouteControllerBean {
@@ -40,6 +41,15 @@ public class RouteControllerBean {
 	// Set the HTTP response code and body after starting the route
         exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);  
         exchange.getIn().setBody("Route successfully stopped");        
+
+    }
+
+    public void loadRoute(Exchange exchange) throws Exception {
+	// Set the HTTP response code and body after starting the route
+	MultipartFile f = exchange.getIn().getHeader("yamlFile",MultipartFile.class);
+	System.out.println(f);
+        exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);  
+        exchange.getIn().setBody("Route loading not under /api");        
 
     }
 

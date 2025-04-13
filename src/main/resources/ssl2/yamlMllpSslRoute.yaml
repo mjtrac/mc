@@ -1,0 +1,22 @@
+#Demonstrates problem with MLLP response from forward.
+# Remove setProperty to fail.
+- route:
+    id: MllpSSLForwardingRoute
+    from:
+      uri: "mllp://0.0.0.0:{{mllp.inbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
+      steps:
+        - to: "mllp://0.0.0.0:{{mllp.outbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
+        - log:
+            message: "Body: ${body.replaceAll('\\r','\\n')}"
+        - log:
+            message: "No set exchangeProp CamelMllpAcknowledgementString:\n${exchangeProperty.CamelMllpAcknowledgementString.replaceAll('\\r','\\n')}"
+        - log:
+            message: "But got header CamelMllpAcknowledgementString:\n${headers.CamelMllpAcknowledgementString.replaceAll('\\r','\\n')}"
+        - log: "Set exchangeProperty to header value."
+        - setProperty:
+            name: "CamelMllpAcknowledgementString"
+            simple: "${header.CamelMllpAcknowledgementString}"
+        - log:
+            message: "Body: ${body.replaceAll('\\r','\\n')}"
+        - log:
+            message: "exchangeProperty set from header:\n${exchangeProperty.CamelMllpAcknowledgementString.replaceAll('\\r','\\n')}"

@@ -10,13 +10,54 @@ import org.apache.camel.Exchange;
 @Component
 public class HL7Processor {
     
-
-    public String extractPatientId(Exchange exchange) {
+    public String generateSuccessAck(Exchange exchange) {
+	    String mstr = exchange.getIn().getBody(String.class);
+	    String[] segments = mstr.split("\r");
+	    String mshSegment = segments[0];
+	    // double backslash because pipe is a special char in regex
+	    String[] mshFields = mshSegment.split("\\|");
+	    StringBuilder ack = new StringBuilder();
+	    try {
+		ack.append(mshFields[0])
+		    .append("|")
+		    .append(mshFields[1])
+		    .append("|")
+		    .append(mshFields[4])//reverse 2,3 and 4,5 send/rcv 
+		    .append("|")
+		    .append(mshFields[5]) 
+		    .append("|")
+		    .append(mshFields[2])
+		    .append("|")
+		    .append(mshFields[3]) 
+		    .append("|")
+		    .append(mshFields[6])
+		    .append("|")
+		    .append(mshFields[7])
+		    .append("|")
+		    .append(mshFields[8])
+		    .append("|")
+		    .append(mshFields[9])
+		    .append("|")
+		    .append(mshFields[10])
+		    .append("|")
+		    .append(mshFields[11])
+		    .append("\rMSA|AA|"+mshFields[9]+"|\r");
+		exchange.setProperty(
+				     "CamelMllpAcknowledgementString",
+				     ack.toString());
+	    } catch (Exception e) {
+		System.out.println("Error setting CamelMllpAcknowledgementString property");
+	    }
+	    return ack.toString();
+    }
+		
+    public void extractPatientId(Exchange exchange) {
 	    Message m = exchange.getIn().getBody(Message.class);
 	    Terser t = new Terser(m);
 	    String pid31="XXX";
 	    try {
 		pid31 = t.get("PID-3-1");
+		// Confirm that terser can set values into message
 		t.set("PID-3-1","new");
 		exchange.getIn().setHeader("PID31a",pid31);
 		exchange.getIn().setBody(m);
@@ -24,12 +65,14 @@ public class HL7Processor {
 	    } catch (Exception e) {
 		System.err.println("Error getting pid31 from message body (hl7)");
 	    }
+	    /*
 	    try {
 		exchange.setProperty("CamelMllpAcknowledgementString",
 				     "MSH|^~\\&|RS|RF|SA|SF|20250328140203.319-0700||ACK^A01|MSG00001A|P|2.5.1\rMSA|AA|MSG00001");
 	    } catch (Exception e) {
 		System.err.println("Error setting property CamelMllpAcknowledgementString");
-	    }
-	    return pid31;
+		}
+	    */
+	    return ;
     }
 }

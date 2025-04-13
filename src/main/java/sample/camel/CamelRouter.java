@@ -77,6 +77,7 @@ public class CamelRouter extends RouteBuilder {
 	// List Routes
 	rest("/listroutes")
 	    .get()
+	    .routeId("listroutes")
 	    .description("List all routes")
 	    .produces("application/json")
 	    .outType(List.class)
@@ -96,6 +97,7 @@ public class CamelRouter extends RouteBuilder {
 	// Start MLLP route
         rest("/startmllp")
             .get()
+	    .routeId("startMLLP")
             .description("Start MLLP Route")
 	    .responseMessage()
 	    .code(200)
@@ -107,6 +109,7 @@ public class CamelRouter extends RouteBuilder {
         rest("/stopmllp")
             .get()
             .description("Stop MLLP Route")
+	    .routeId("stopMLLP")
 	    .responseMessage()
 	    .code(200)
 	    .message("Route stopped")
@@ -114,21 +117,32 @@ public class CamelRouter extends RouteBuilder {
             .to("bean:routeControllerBean?method=stopRoute");
 
     
+        // Load route from yaml file named in form
+        rest("/loadroute")
+            .get()
+            .description("Load Route chosen from form")
+	    .responseMessage()
+	    .code(200)
+	    .message("Route loaded")
+	    .endResponseMessage()
+            .to("bean:routeControllerBean?method=showRouteForm");
+
+    
         rest("/users").description("User REST service")
             .consumes("application/json")
             .produces("application/json")
 
-            .get().description("Find all users").outType(User[].class)
+            .get().routeId("listusers").description("Find all users").outType(User[].class)
                 .responseMessage().code(200).message("All users successfully returned").endResponseMessage()
                 .to("bean:userService?method=findUsers")
         
-            .get("/{id}").description("Find user by ID")
+            .get("/{id}").routeId("getUser").description("Find user by ID")
                 .outType(User.class)
                 .param().name("id").type(path).description("The ID of the user").dataType("integer").endParam()
                 .responseMessage().code(200).message("User successfully returned").endResponseMessage()
                 .to("bean:userService?method=findUser(${header.id})")
 
-            .put("/{id}").description("Update a user").type(User.class)
+            .put("/{id}").routeId("putUser").description("Update a user").type(User.class)
                 .param().name("id").type(path).description("The ID of the user to update").dataType("integer").endParam()    
                 .param().name("body").type(body).description("The user to update").endParam()
                 .responseMessage().code(204).message("User successfully updated").endResponseMessage()

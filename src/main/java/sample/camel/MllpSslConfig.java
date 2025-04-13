@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.apache.camel.support.jsse.SSLContextParameters;
 import org.apache.camel.support.jsse.KeyStoreParameters;
 import org.apache.camel.support.jsse.KeyManagersParameters;
+import org.apache.camel.support.jsse.TrustManagersParameters;
 import org.apache.camel.support.jsse.CipherSuitesParameters;
 import java.util.List;
 
@@ -46,6 +47,16 @@ public class MllpSslConfig {
 	sslContextParameters.setCipherSuites(cipherSuitesParameters);
 	*/
 	//System.out.println("About to return sslContextParameters from fn mysslContextParameters in class MllpSslConfig()");
+	// ----- TRUSTSTORE (to trust Mirth's certificate) -----
+        KeyStoreParameters truststore = new KeyStoreParameters();
+        truststore.setResource("classpath:truststore.jks"); // contains Mirth cert
+        truststore.setPassword("password");
+
+        TrustManagersParameters trustManagers = new TrustManagersParameters();
+        trustManagers.setKeyStore(truststore);
+	// ----- TRUSTSTORE (to trust Mirth's certificate) -----
+
+        sslContextParameters.setTrustManagers(trustManagers);
         return sslContextParameters;
     }
 }
