@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/yaml/yaml.min.js"></script>
+<title>Load Route From File or Input</title>
+</head>
+<body>
+
+<h2>Load a YAML Route</h2>
+
+<form action="/api/routes2/loadfile" method="POST" enctype="multipart/form-data">
+  <label for="yamlFile">YAML Path:</label>
+  <input type="file" id="yamlFile" name="yamlFile" placeholder="Choose YAML route file" required>
+   
+  <button type="submit">Load Yaml File Route</button>
+</form>
+
+<form id="yamlForm" action="/api/routes2/loadtext" method="POST">
+  <div id="yaml-editor"></div>
+  <textarea name="yaml_content" id="yamlContent"></textarea>
+  <button type="submit">Submit YAML</button>
+
+
+<script>
+  var yamlEditor = CodeMirror(document.getElementById("yaml-editor"), {
+      mode: "yaml",
+      lineNumbers: true,
+      theme: "default" // You can choose other themes
+  });
+  const form = document.getElementById('yamlForm');
+  const textarea = form.querySelector('textarea[name="yaml_content"]');
+
+  form.addEventListener('submit', function(event) {
+      const yamlContent = yamlEditor.getValue();
+      textarea.value = yamlContent; // Set the textarea's value with the editor content
+      // The form will now submit the 'yaml_content' field
+  });
+</script>
+</form>
+<!-- Display message (success or error) -->
+<div>
+  <p th:text="${message}"></p>
+</div>
+</body>
+</html>

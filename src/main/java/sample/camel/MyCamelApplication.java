@@ -18,6 +18,9 @@ package sample.camel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import java.util.concurrent.atomic.AtomicReference;
+import org.apache.camel.support.jsse.SSLContextParameters;
 
 //CHECKSTYLE:OFF
 /**
@@ -32,6 +35,11 @@ public class MyCamelApplication {
     public static void main(String[] args) {
         SpringApplication.run(MyCamelApplication.class, args);
     }
+
+    @Bean
+    public AtomicReference<SSLContextParameters> sslRef() {
+	return new AtomicReference<>();
+}
     
 }
 //CHECKSTYLE:ON

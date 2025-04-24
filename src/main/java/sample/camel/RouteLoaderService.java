@@ -35,6 +35,7 @@ public class RouteLoaderService {
 	byte[] buffer = new byte[1024];
         int bytesRead;
 	String allContent = new String("");
+	camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));
         // Read the file input stream buffer by buffer
         while ((bytesRead = fileInputStream.read(buffer)) != -1) {
             // Convert the bytes read into a string (using UTF-8 encoding)
@@ -47,7 +48,8 @@ public class RouteLoaderService {
 	loader.loadRoutes(setResource(allContent,"yaml"));
 
         System.out.println("File Content:\n" + allContent);
-	
+	camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));
+
 	/*  Loading a route using Java DSL
 	camelContext.addRoutes(new RouteBuilder() {
 		@Override

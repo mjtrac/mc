@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Route Management</title>
+  <link rel="stylesheet" th:href="@{/css/normalize.css}">
+</head>
+<body>
+    <h1>Routes</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Route ID</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="route : ${routes}">
+                <td th:text="${route.id}"></td>
+                <td th:text="${route.status}"></td>
+                <td>
+                    <form th:action="@{/api/routes2/{routeId}/start(routeId=${route.id})}" method="post">
+                        <button type="submit" th:if="${route.status == 'Stopped'}">Start</button>
+                    </form>
+                    <form th:action="@{/api/routes2/{routeId}/stop(routeId=${route.id})}" method="post">
+                        <button type="submit" th:if="${route.status == 'Started'}">Stop</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
