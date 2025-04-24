@@ -133,6 +133,24 @@
 	  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 	  <version>2.3.0</version>
 	</dependency>
+	<dependency>
+	  <groupId>org.springframework.boot</groupId>
+	  <artifactId>spring-boot-starter-web</artifactId>
+	</dependency>
+
+	<dependency>
+          <groupId>org.apache.camel.springboot</groupId>
+          <artifactId>camel-spring-boot-starter</artifactId>
+          <version>4.10.0</version>
+	</dependency>
+
+	<!-- Apache Camel Management for route management -->
+	<dependency>
+	  <groupId>org.apache.camel</groupId>
+	  <artifactId>camel-management</artifactId>
+	  <version>4.10.0</version>
+	</dependency>
+	
 <!-- include springodc so we can browse the api docs in a swagger web ui -->
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
@@ -223,11 +241,18 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-version}</version>
 
-		<configuration>
+		<configuration>		  
+		  <!--imageName>my-camel-app:latest</imageName>
+		  <builder>paketobuildpacks/builder-jammy-base</builder-->
                 <!--jvmArguments>-Djavax.net.debug=ssl</jvmArguments-->
 		</configuration>
 		<executions>
-                    <execution>
+		  <!--execution>
+		    <goals>
+		      <goal>build-image</goal>
+		    </goals>
+		  </execution-->
+		  <execution>
                         <goals>
                             <goal>repackage</goal>
                         </goals>

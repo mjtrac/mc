@@ -15,8 +15,17 @@ spring:
   dataSource:
     url: jdbc:sqlite:mydata.db
     driver-class-name: org.sqlite.JDBC
-
+  thymeleaf:
+    prefix: "classpath:/templates/"
+    suffix: ".html"
+    mode: "HTML"
+    encoding: "UTF-8"
+    
 camel:
+  management:
+    enabled: true
+    jmxAgent: true
+    
   micrometer:
     enabled: true
     route-metrics: true
@@ -48,3 +57,6 @@ mllp:
     port: 15679
   outbound:
     port: 15678
+
+server:
+  port: 8080

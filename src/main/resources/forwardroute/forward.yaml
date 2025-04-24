@@ -15,14 +15,14 @@
 
 
 - route:  
-    id: encompassingMllpRoute  
+    id: receiveAndForwardMllpRoute  
     from:  
-      uri: "mllp://0?hostname=localhost&port=15681&autoAck=false"  
+      uri: "mllp://0?hostname=localhost&port=15679&autoAck=false&sslContextParameters=#mysslContextParameters"  
       steps:
         - bean:
             beanType: "AddMllpFramingProcessor"
             method: "process"
-        - to: "netty:tcp://0?host=localhost&port=15682&sync=true"
+        - to: "netty:tcp://0?host=localhost&port=15678&ssl=true&sslContextParameters=#mysslContextParameters&synchronous=true"
         - bean:
             beanType: "RemoveMllpFramingProcessor"
             method: "process"
