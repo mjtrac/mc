@@ -1,15 +1,25 @@
-== Camel Example Spring Boot Route Configuration
+== Camel Example Spring Boot MitchConnect
 
-This example shows how Camel is capable of loading routes during startup using the new route loader system.
-The route loader has support for loading routes in XML, Java and YAML (other languages to be added).
+This example shows how to receive and forward SSL encrypted
+messages via MLLP. It logs the messages to a SQLite database
+in its toplevel directory, so SQLite must be installed.
 
-In this example the focus is on how you can use global _routes configuration_ with the DSL to separate
-error handling (and other cross routes functionality) from all your routes.
+Once you see the "Completed initialization in x ms" message,
+you can point a web browser to localhost:8080/api/routes
+to see the loaded routes, and to localhost:8080/api/routes/load
+to load a valid yaml file route
+or enter valid yaml to create a route.
 
-This example has one route in Java, XML and YAML. Each of those routes refer to a
-specific route configuration, which is also _coded_ in the same language as the route.
-But this is not required, you can use Java to code your route configurations for
-advanced error handling, and then _code_ your routes in other languages such as XML or YAML.
+If the entered yaml is not valid it will not load but there
+will be no message.  If it is valid you will see it when
+your browser is redirected to /api/routes.
+
+You can Stop and Suspend routes.  Stopped or suspended routes
+can be Started.
+
+The application.yaml file is in src/main/resources, and keystore
+and truststore and port information is under camel: mllp: ssl:
+
 
 === How to run
 

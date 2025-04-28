@@ -1,10 +1,0 @@
-- route:
-    id: timedSendRoute
-    from:
-      uri: "timer:myTimer?period=5000"
-      steps:
-        - setBody:
-            constant: "MSH|^~zx|SENDING_APP|SENDING_FAC|RECEIVING_APP|RECEIVING_FAC|20231027120000||ADT^A01|MSG0001|P|2.5.1||||||UNICODE UTF-8PID|1||123456789^^^MRN^MRN|123456789||DOE^JOHN||19800101|M||"
-        - log: "BODY: ${body}"
-        - log: "ACKTYPE: ${header.CamelMllpAcknowledgementType}"
-        - log: "ACKSTR: ${header.CamelMllpAcknowledgementString}"

@@ -138,11 +138,6 @@
 	  <artifactId>spring-boot-starter-web</artifactId>
 	</dependency>
 
-	<dependency>
-          <groupId>org.apache.camel.springboot</groupId>
-          <artifactId>camel-spring-boot-starter</artifactId>
-          <version>4.10.0</version>
-	</dependency>
 
 	<!-- Apache Camel Management for route management -->
 	<dependency>

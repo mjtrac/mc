@@ -1,8 +1,0 @@
-- route:
-    id: log-routename-every-second
-    from:
-      uri: "timer:myTimer?period=5000"
-      steps:
-        - setBody:
-            constant: "Hello"
-        - log: "BODY3: ${body}"
