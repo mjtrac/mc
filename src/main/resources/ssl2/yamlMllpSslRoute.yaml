@@ -3,9 +3,23 @@
 - route:
     id: MllpSSLForwardingRoute
     from:
-      uri: "mllp://0.0.0.0:{{mllp.inbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
+      uri: "mllp://0.0.0.0:{{camel.mllp.ssl.inbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
       steps:
-        - to: "mllp://0.0.0.0:{{mllp.outbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
+        # Capture message body in header
+        # so body can become an insert statement for jdbc
+        - setHeader:
+            name: originalBody
+            simple: "${body}"
+        - setBody:
+            simple: "INSERT INTO mytable (name, value) VALUES ('body', '${header.originalBody}')"
+        # Call jdbc
+        - to: "jdbc:dataSource"
+        # Restore the original body
+        - setBody:
+            simple: "${header.originalBody.toString()}"
+        # Send it out to outbound port
+        # using params from bean mysslContextParameters
+        - to: "mllp://0.0.0.0:{{camel.mllp.ssl.outbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
         - log:
             message: "Body: ${body.replaceAll('\\r','\\n')}"
         - log:

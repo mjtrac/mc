@@ -10,32 +10,41 @@ management:
           - "prometheus"
           - "camelroutes"
           - "metrics"
-
-spring:
-  dataSource:
-    url: jdbc:sqlite:mydata.db
-    driver-class-name: org.sqlite.JDBC
-  thymeleaf:
-    prefix: "classpath:/templates/"
-    suffix: ".html"
-    mode: "HTML"
-    encoding: "UTF-8"
-    
+    metrics:
+      enabled: true
 camel:
+  main:
+    routes-builder-loader-ignore-loading-error: false
+  mllp:
+    ssl:
+      keystore:
+        resource: "classpath:test.jks"
+        password: password
+        keypassword: password
+      truststore:
+        resource: "classpath:truststore.jks"
+        password: password
+# This is used in the channel in src/main/routes/ssl2
+      inbound:
+        port: 15679
+      outbound:
+        port: 15678
   management:
     enabled: true
     jmxAgent: true
-    
-  micrometer:
-    enabled: true
-    route-metrics: true
-  netty:
-    ssl:
-      keystore:
-        password: "password"
-        resource: file:/Users/mjtrac/test.jks
+    jmx:
+      statistic-enabled: true
+      statistics-enabled: true
+#  micrometer:
+#    enabled: false #true
+#    route-metrics: false #true
+#  netty:
+#    ssl:
+#      keystore:
+#        password: "password"
+#        resource: file:/Users/mjtrac/test.jks
   springboot:
-    name: MyCamel
+    name: CamelMllpSslHL7Demo
 
     # keep Camel running
     main-run-controller: true
@@ -52,11 +61,20 @@ camel:
     routes-include-pattern: classpath:ssl2/*
     #,classpath:myroutes/*
 
-mllp:
-  inbound:
-    port: 15679
-  outbound:
-    port: 15678
 
 server:
   port: 8080
+
+spring:
+  boot:
+    run:
+      jvmArguments: -Djavax.net.debug=ssl,handshake,certpath
+  dataSource:
+    url: jdbc:sqlite:mydata.db
+    driver-class-name: org.sqlite.JDBC
+  thymeleaf:
+    prefix: "classpath:/templates/"
+    suffix: ".html"
+    mode: "HTML"
+    encoding: "UTF-8"
+    

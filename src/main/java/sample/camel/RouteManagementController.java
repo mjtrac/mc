@@ -11,12 +11,15 @@ import org.apache.camel.spi.Resource;
 import org.apache.camel.spi.RoutesBuilderLoader;
 import org.apache.camel.support.jsse.SSLContextParameters;
 import org.apache.camel.support.ResourceSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,10 +40,13 @@ import javax.management.MalformedObjectNameException;
 import java.lang.management.ManagementFactory;
 
 
+
 @Controller
 @RequestMapping("/api")
 public class RouteManagementController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RouteManagementController.class);
+    
     @Autowired
     private CamelContext camelContext;
 
@@ -50,9 +56,12 @@ public class RouteManagementController {
     @Autowired
     private AtomicReference<SSLContextParameters> sslRef;
 
-   @Autowired
+    @Autowired
     private RouteLoaderService routeLoaderService; // Inject RouteLoaderService
 
+    @Autowired RouteInfoService routeInfoService;
+
+    @Autowired Ris ris;
     
     // List all routes
     @GetMapping("/routes")
@@ -68,23 +77,18 @@ public class RouteManagementController {
     @GetMapping("/routes2")
     public String listRoutesWithT(Model model) {
 	    String contextId = camelContext.getName();
-
-	    List<Map<String, String>> routes = camelContext.getRoutes().stream().map(
-	    r -> Map.of(
-			"id", r.getId(),// + " " + "Tot/Fail/Inflight 0/0/0",
-			"status", camelContext.getRouteController().getRouteStatus(r.getId()).name()
-			)
-        ).collect(Collectors.toList());
-	model.addAttribute("routes", routes);
-        return "routes";  // Points to src/main/resources/templates/routes.html
+	    List<Map<String, List<String>>> routes2 = routeInfoService.getRouteDetailsAsMapIdToList();
+	    model.addAttribute("routes2", routes2);
+        return "routes2";  // Points to src/main/resources/templates/routes.html
     }
 
     // Start a specific route
     @PostMapping("/routes2/{routeId}/start")
     public RedirectView startRoute(@PathVariable("routeId") String routeId, Model model) {
+	LOG.error("In startRoute via /routes/.../start");
         try {
             camelContext.getRouteController().startRoute(routeId);
-            return new RedirectView("/api/routes2");//ResponseEntity.ok("Route stopped: " + routeId);
+            return new RedirectView("/api/routes2");//ResponseEntity.ok("Route started: " + routeId);
         } catch (Exception e) {
             return new RedirectView("/api/routes2");//ResponseEntity.status(500).body("Failed to stop route: " + e.getMessage());
         }
@@ -93,12 +97,25 @@ public class RouteManagementController {
     // Stop a specific route
     @PostMapping("/routes2/{routeId}/stop")
     public RedirectView stopRoute(@PathVariable("routeId") String routeId, Model model) {
-	System.out.println("In stopRoute via /routes/.../stop");
+	LOG.error("In stopRoute via /routes/.../stop");
+	LOG.warn(String.valueOf(ris.getCompletedExchanges(camelContext.getRoute(routeId))));
         try {
             camelContext.getRouteController().stopRoute(routeId);
             return new RedirectView("/api/routes2");//ResponseEntity.ok("Route stopped: " + routeId);
         } catch (Exception e) {
             return new RedirectView("/api/routes2");//ResponseEntity.status(500).body("Failed to stop route: " + e.getMessage());
+        }
+    }
+
+    // Suspend a specific route
+    @PostMapping("/routes2/{routeId}/suspend")
+    public RedirectView suspendRoute(@PathVariable("routeId") String routeId, Model model) {
+	LOG.error("In stopRoute via /routes/.../suspend");
+        try {
+            camelContext.getRouteController().suspendRoute(routeId);
+            return new RedirectView("/api/routes2");//ResponseEntity.ok("Route suspended: " + routeId);
+        } catch (Exception e) {
+            return new RedirectView("/api/routes2");//ResponseEntity.status(500).body("Failed to suspend route: " + e.getMessage());
         }
     }
 
@@ -109,16 +126,17 @@ public class RouteManagementController {
     }
     
     @PostMapping("/routes2/loadtext")
-    public RedirectView loadRouteText(@RequestParam("yaml_content") String yamlContent) {
-	System.out.println(yamlContent);
-
-	
+    public RedirectView loadRouteText(@RequestParam("yaml_content") String yamlContent, RedirectAttributes redirectAttributes) {
 	try (InputStream is = new ByteArrayInputStream(yamlContent.getBytes(StandardCharsets.UTF_8))) {
 	    routeLoaderService.addRouteFromYaml(is);
+	    LOG.error("RouteLoaderService no exception");
             return new RedirectView("/api/routes2");
 	} catch (Exception e) {
-	    System.out.println("Trouble");
-	    return new RedirectView("/api/routes2/load");
+	    //LOG(e.printStackTrace());
+	    //LOG.error(e);
+	    redirectAttributes.addFlashAttribute("error",e.getMessage());
+	    LOG.error("RouteLoaderService " + e.getMessage());
+	    return new RedirectView("/api/routes2/loadtext");
 	}
 	
     }

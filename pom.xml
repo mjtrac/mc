@@ -190,6 +190,11 @@
         <!-- yaml route loader -->
 	<dependency>
 	  <groupId>org.apache.camel</groupId>
+	  <artifactId>camel-yaml-io</artifactId>
+	  <version>4.10.0</version> <!-- Your Camel version -->
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.camel</groupId>
 	  <artifactId>camel-yaml-dsl</artifactId>
 	  <version>4.10.0</version> <!-- Your Camel version -->
 	</dependency>

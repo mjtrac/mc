@@ -9,6 +9,8 @@ import org.apache.camel.support.PluginHelper;
 import org.apache.camel.support.ResourceHelper;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ import java.io.IOException;
 @Service
 public class RouteLoaderService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RouteLoaderService.class);
+
+    
     @Autowired
     private CamelContext camelContext;
 
@@ -35,7 +40,7 @@ public class RouteLoaderService {
 	byte[] buffer = new byte[1024];
         int bytesRead;
 	String allContent = new String("");
-	camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));
+	//camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));
         // Read the file input stream buffer by buffer
         while ((bytesRead = fileInputStream.read(buffer)) != -1) {
             // Convert the bytes read into a string (using UTF-8 encoding)
@@ -45,12 +50,17 @@ public class RouteLoaderService {
 	
 	loader = PluginHelper.getRoutesLoader(camelContext);
 
-	loader.loadRoutes(setResource(allContent,"yaml"));
-
-        System.out.println("File Content:\n" + allContent);
+	try {
+	    loader.loadRoutes(setResource(allContent,"yaml"));
+	    LOG.error(loader.toString());
+	} catch (Exception e) {
+	    LOG.error(e.getMessage());
+	}
+        /*
+	  System.out.println("File Content:\n" + allContent);
 	camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));
 
-	/*  Loading a route using Java DSL
+	  Loading a route using Java DSL
 	camelContext.addRoutes(new RouteBuilder() {
 		@Override
 		public void configure() throws Exception {
