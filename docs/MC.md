@@ -307,8 +307,16 @@ for Apache Camel than to develop new plugins for Mirth Connect.
 To see the published components, go to 
 https://camel.apache.org/components/4.10.x/index.html
 
-We can also extend routes with SSL support without needing to purchase anything.
-We'll tackle that next. We need to provide an object of type 
+I've uploaded a working example to GitHub with an mllp receiver, 
+an mllp sender, and an ssl-enabled route which receives an HL7 message, 
+forwards it, and returns the final destination's acknowledgement 
+to the original sender.  This also includes a rudimentary web interface 
+which allows loading yaml routes, stopping and/or suspending them, 
+and starting them from a web browser.
+
+SSL with groovy.
+
+We need to provide an object of type 
 SSLContextParameters. One alternative is to do this via Java, but let's
 say we want to add SSL without needing to restart. In that case, 
 we can take advantage of the ability to include groovy scripts 
