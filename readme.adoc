@@ -45,5 +45,20 @@ https://camel.apache.org/support.html[let the Camel Riders know].
 
 Mitch Trachtenberg
 
+Wireshark screen caps:
+
+image::images/Unsecured1.png
+
+image::images/Unsecured2.png
+
+image::images/SSL.png
+
+Debug output (with SSL debugging)
+
+image::images/UnsecuredSendOutput.png
+
+image::images/UnsecuredRcvOutput.png
+
+image::images/SecuredRcvAndForwardOutput.png
 
 
