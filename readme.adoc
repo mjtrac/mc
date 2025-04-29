@@ -2,23 +2,31 @@
 
 This example shows how to receive and forward SSL encrypted
 messages via MLLP. It logs the messages to a SQLite database
-in its toplevel directory, so SQLite must be installed.
+in its toplevel directory, so SQLite must be installed.  It also
+includes sample yaml routes for sending and receiving without
+SSL.
 
 Once you see the "Completed initialization in x ms" message,
-you can point a web browser to localhost:8080/api/routes
-to see the loaded routes, and to localhost:8080/api/routes/load
+you can point a web browser to localhost:8080/api/routes2
+to see the loaded routes, and to localhost:8080/api/routes2/load
 to load a valid yaml file route
-or enter valid yaml to create a route.
+or enter valid yaml text to create a route.
 
 If the entered yaml is not valid it will not load but there
 will be no message.  If it is valid you will see it when
-your browser is redirected to /api/routes.
+your browser is redirected to /api/routes2.
 
 You can Stop and Suspend routes.  Stopped or suspended routes
 can be Started.
 
 The application.yaml file is in src/main/resources, and keystore
 and truststore and port information is under camel: mllp: ssl:
+for the SSL route and camel: mllp: nossl: for the unsecured send
+and receive routes.
+
+Beware: this is more a learning experience product than anything
+showing best practices.  Still, it provides one path to follow
+should you run into trouble getting started on something similar.
 
 
 === How to run
@@ -29,13 +37,13 @@ You can run this example using
 
 === Help and contributions
 
+This is an in-progress hobby-level effort, and I am by no means
+an expert on Camel or Spring Boot.
+
 If you hit any problem using Camel or have some feedback, then please
-https://camel.apache.org/support.html[let us know].
+https://camel.apache.org/support.html[let the Camel Riders know].
 
-We also love contributors, so
-https://camel.apache.org/contributing.html[get involved] :-)
-
-The Camel riders!
+Mitch Trachtenberg
 
 
 
