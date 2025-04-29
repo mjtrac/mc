@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s # How often Prometheus scrapes targets.
+
+scrape_configs:
+  - job_name: 'spring-boot-app' # A name for your job.
+    metrics_path: '/actuator/prometheus' # The endpoint to scrape.
+    static_configs:
+      - targets: ['localhost:8080'] # The target to scrape.

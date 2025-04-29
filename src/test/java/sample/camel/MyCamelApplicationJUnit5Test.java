@@ -29,7 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @CamelSpringBootTest
-@SpringBootTest(classes = MyCamelApplication.class)
+@SpringBootTest(classes = MitchConnect.class)
 public class MyCamelApplicationJUnit5Test {
 
     @Autowired

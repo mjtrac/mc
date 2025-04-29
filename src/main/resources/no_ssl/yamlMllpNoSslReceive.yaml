@@ -1,0 +1,26 @@
+# Demonstrates receiving and auto-acking HL7v2,
+# and applying HAPI Terser to extract fields.
+# Remove setProperty to fail.
+- route:
+    id: MllpNoSslReceive
+    from:
+      uri: "mllp://0.0.0.0:{{camel.mllp.nossl.inbound-port}}?autoAck=true"
+      steps:
+        - log:
+            message: "Body: ${body.replaceAll('\\r','\\n')}"
+        - unmarshal:
+            hl7: {}
+        - log: "Segments ${body.getNames()}"
+        - log: "Class ${body.class.name}"
+        - setHeader:
+            name: terserHeader
+            expression:
+              simple: 'Terser: ${bean:terserUtil.extract(${body},"/PID-5-1")}'
+        - log: "terserHeader ${header.terserHeader}"
+        # Note: although HAPI's terser works,
+        # the following will not work on HAPI GenericMessage because
+        # the required methods aren't available except on specific types;
+        # a processor would have to cast it to a particular type of message,
+        # like ADT_A01
+        #- log: "Descriptive  ${body.getPID(0).getPatientName(0).getFamilyName().toString()}"
+

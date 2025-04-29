@@ -1,0 +1,29 @@
+# Demonstrates sending an HL7v2 message from a file, as a string,
+# and receiving the remote system's acknowledgement.
+
+- route:
+    id: MllpNoSslSend
+    from:
+      uri: "file:/tmp?fileName=hl7msg.txt&move=sentmessages"
+      steps:
+        - log: "${body}"
+        - convertBodyTo:
+            type: "java.lang.String"
+        - log: "Sending: ${body.class.name} ${body}"
+        - to: "mllp://0.0.0.0:{{camel.mllp.nossl.outbound-port}}"
+        - onCompletion:
+           steps:
+              - log:
+                  message: "Acknowledged: ${header.CamelMllpAcknowledgement}"  
+              - choice:
+                  when:
+                    - expression:
+                        simple: "${header.CamelMllpAcknowledgement} contains 'MSA|AA'"
+                      steps:
+                        - log:
+                            message: "✅ Positive ACK (AA) received"
+                  otherwise:
+                    steps:
+                      - log:
+                          message: "❌ Negative ACK or unexpected response"
+

@@ -1,0 +1,58 @@
+# From ChatGPT
+- route:
+    id: SampleRoute
+    from:
+      uri: "direct:start"
+      steps:
+
+        # ✅ 1. Log (shorthand form for simple expressions)
+        - log: "Received message: ${body}"
+
+        # ✅ 2. Log (full form, required in nested steps)
+        - log:
+            message: "This is a full log step"
+
+        # ✅ 3. Convert body to string
+        - convertBodyTo:
+            type: "java.lang.String"
+
+        # ✅ 4. Set a header using a simple expression
+        - setHeader:
+            name: myHeader
+            expression:
+              simple: "${body.length()}"
+
+        # ✅ 5. Choice with one condition
+        - choice:
+            when:
+              - expression:
+                  simple: "${header.myHeader} == 'value'"
+                steps:
+                  - log:
+                      message: "Header matched value"
+                  - to: "direct:matched"
+            otherwise:
+              steps:
+                - log:
+                    message: "No match"
+                - to: "direct:unmatched"
+
+        # ✅ 6. On completion
+        - onCompletion:
+            steps:
+              - log:
+                  message: "Route completed"
+              - choice:
+                  when:
+                    - expression:
+                        simple: "${header.CamelMllpAcknowledgement} contains 'MSA|AA'"
+                      steps:
+                        - log:
+                            message: "✅ Positive ACK"
+                  otherwise:
+                    steps:
+                      - log:
+                          message: "❌ Negative ACK"
+
+        # ✅ 7. Send to another endpoint
+        - to: "mock:result"
