@@ -61,4 +61,7 @@ image::images/UnsecuredRcvOutput.png
 
 image::images/SecuredRcvAndForwardOutput.png
 
+Route Management Screen /api/routes2
+
+image::images/RouteManagement.png
 
