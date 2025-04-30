@@ -24,6 +24,20 @@ and truststore and port information is under camel: mllp: ssl:
 for the SSL route and camel: mllp: nossl: for the unsecured send
 and receive routes.
 
+Routes in src/main/resources/[ssl2|no_ssl] are loaded on startup;
+routes in src/main/resources/unloadedroutes include hello.yaml 
+and hello2.yaml, which just write to the log every two 
+and five seconds.  (These are suitable routes to load via 
+/api/routes2/load or the button on /api/routes2.)
+
+Some of the listed routes (the DB routes) are just present
+and more or less irrelevant; src/main/ssl2/yamlMllpSslRoute.yaml
+shows a call to jdbc which writes to the SQLite database
+at mydata.db, configured in application.yaml
+
+For the sending route to send, place an HL7 message in 
+/tmp/hl7msg.txt.
+
 Beware: this is more a learning experience product than anything
 showing best practices.  Still, it provides one path to follow
 should you run into trouble getting started on something similar.
