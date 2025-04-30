@@ -36,6 +36,15 @@ shows a call to jdbc which writes to the SQLite database
 at mydata.db, configured in application.yaml. To prevent the
 yamlMllpSslRoute from failing for lack of that db file,
 the one line call is commented out with an explanation.
+If you create an empty mydata.db, then you can use the body
+shown in the createTable route to create a suitable table:
+ .setBody(simple("CREATE TABLE IF NOT EXISTS mytable \
+ (id INTEGER PRIMARY KEY AUTOINCREMENT, \
+ name VARCHAR(255),value VARCHAR(4096), \
+ created_at DATETIME DEFAULT CURRENT_TIMESTAMP, \
+ route VARCHAR(255)"))
+ .to("jdbc:dataSource");
+
 
 For the sending route to send, place a valid HL7v2 message
 in /tmp/hl7msg.txt.  Once sent, it will be moved
