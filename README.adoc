@@ -33,10 +33,13 @@ http://localhost:8080/api/routes2.)
 Some of the listed routes (the DB routes) are just present
 and more or less irrelevant; src/main/ssl2/yamlMllpSslRoute.yaml
 shows a call to jdbc which writes to the SQLite database
-at mydata.db, configured in application.yaml
+at mydata.db, configured in application.yaml. To prevent the
+yamlMllpSslRoute from failing for lack of that db file,
+the one line call is commented out with an explanation.
 
-For the sending route to send, place an HL7 message in 
-/tmp/hl7msg.txt.
+For the sending route to send, place a valid HL7v2 message
+in /tmp/hl7msg.txt.  Once sent, it will be moved
+to /tmp/sentmessages.
 
 Beware: this is more a learning experience product than anything
 showing best practices.  Still, it provides one path to follow
@@ -44,7 +47,7 @@ should you run into trouble getting started on something similar.
 
 === How to run
 
-You can run this example by installing Java21 and maven and using
+You can run this example by installing Java 21 and maven and using
 
     mvn spring-boot:run
 
