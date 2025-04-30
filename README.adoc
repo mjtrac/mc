@@ -38,14 +38,25 @@ You can run this example using
 === Help and contributions
 
 This is an in-progress hobby-level effort, and I am by no means
-an expert on Camel or Spring Boot.
+an expert on Camel or Spring Boot or SSL/TLS.  I just realize that
+Mirth Connect is going proprietary, that it charges for SSL,
+and have long thought that Apache Camel may offer an alternative.
 
-If you hit any problem using Camel or have some feedback, then please
+If you hit any problem using Camel or have some feedback on Camel, then please
 https://camel.apache.org/support.html[let the Camel Riders know].
+
+If you have questions or comments about this example, which will
+develop further along an unknown schedule,
+let me know at mjtrac@gmail.com.
+
+Thanks.
 
 Mitch Trachtenberg
 
 === Images 
+
+The files are in the images directory if they don't render for you
+in this document.
 
 ==== Wireshark screen caps:
 
