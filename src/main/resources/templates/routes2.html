@@ -2,7 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Route Management 2</title>
-    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!--link rel="stylesheet" th:href="@{/css/normalize.css}"-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+  $(document).ready(function() {
+    $('#routes2Table').DataTable();
+  });
+</script>
+    
 </head>
 <body>
   <h1>Routes</h1>
@@ -10,7 +19,7 @@
 <a href="/api/routes2/load">
   <button type="button">New temporary route</button>
 </a>  
-    <table border="1">
+    <table id="routes2Table" border="1">
         <thead>
             <tr>
                 <th>Route ID</th>
