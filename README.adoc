@@ -20,7 +20,7 @@ can be Started.
 
 The application.yaml file is in src/main/resources, and keystore
 and truststore and port information is under camel: mllp: ssl:
-for the SSL route and camel: mllp: nossl: for the unsecured send
+for the SSL route and camel: mllp: no_ssl: for the unsecured send
 and receive routes.
 
 Routes under src/main/resources/loadedroutes are loaded on startup;

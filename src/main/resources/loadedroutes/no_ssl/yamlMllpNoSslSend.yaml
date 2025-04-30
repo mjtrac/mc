@@ -11,7 +11,7 @@
             type: "java.lang.String"
         - log: "Sending: ${body.class.name} ${body}"
         # {{ enclosed }} values from application.yaml
-        - to: "mllp://{{camel.mllp.nossl.outbound-port}}:{{camel.mllp.nossl.outbound-port}}"
+        - to: "mllp://{{camel.mllp.no_ssl.outbound-host}}:{{camel.mllp.no_ssl.outbound-port}}"
         - onCompletion:
            steps:
               - log:

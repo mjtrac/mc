@@ -36,7 +36,7 @@ camel:
   mllp:
     # These ports are used in the MllpNoSslReceive and MllpNoSslSend routes
     # defined in src/main/resources/ssl2does mllpReceive use
-    nossl:
+    no_ssl:
       inbound-port: 15681
       inbound-host: "0.0.0.0"
       outbound-port: 15682
