@@ -15,8 +15,13 @@
             simple: "MllpSSLForwardingRoute"
         - setBody:
             simple: "INSERT INTO mytable (route, name, value) VALUES ('${header.camelRoute}', 'body', '${header.originalBody}')"
-        # Call jdbc
-        - to: "jdbc:dataSource"
+        # Call jdbc *************************************************
+        # (this requires that you have a SQLite file named mydata.db
+        # with a table mytable that has route, name, and value fields)
+        # The call is commented out so that lack of that file does not
+        # prevent this route from running.
+        #- to: "jdbc:dataSource"
+        # **********************************************************
         # Restore the original body
         - setBody:
             simple: "${header.originalBody.toString()}"
