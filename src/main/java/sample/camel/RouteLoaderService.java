@@ -52,9 +52,9 @@ public class RouteLoaderService {
 
 	try {
 	    loader.loadRoutes(setResource(allContent,"yaml"));
-	    LOG.error(loader.toString());
+	    LOG.info(allContent);
 	} catch (Exception e) {
-	    LOG.error(e.getMessage());
+	    LOG.error("Could not load route: " + e.getMessage());
 	}
         /*
 	  System.out.println("File Content:\n" + allContent);
