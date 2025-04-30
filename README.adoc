@@ -23,7 +23,7 @@ and truststore and port information is under camel: mllp: ssl:
 for the SSL route and camel: mllp: nossl: for the unsecured send
 and receive routes.
 
-Routes in src/main/resources/[ssl2|no_ssl] are loaded on startup;
+Routes under src/main/resources/loadedroutes are loaded on startup;
 routes in src/main/resources/unloadedroutes include hello.yaml 
 and hello2.yaml, which just write to the log every two 
 and five seconds.  (These are suitable routes to load via 

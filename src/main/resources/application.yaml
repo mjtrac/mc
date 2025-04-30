@@ -38,7 +38,9 @@ camel:
     # defined in src/main/resources/ssl2does mllpReceive use
     nossl:
       inbound-port: 15681
+      inbound-host: "0.0.0.0"
       outbound-port: 15682
+      outbound-host: "0.0.0.0"
     ssl:
       # These ports and resources are used in the channel
       # MllpSSLForwardingRoute,
@@ -52,8 +54,20 @@ camel:
         password: password
       inbound:
         port: 15679
+        host: "0.0.0.0"
       outbound:
         port: 15678
+        host: "0.0.0.0"
+    nextchannel:
+      # These ports and hosts can be referenced
+      # in your next channel
+      inbound:
+        host: TBD
+        port: TBD
+      outbound:
+        host: TBD
+        port: TBD
+      
   management:
     enabled: true
     jmxAgent: true
@@ -82,7 +96,7 @@ camel:
     
 # which directory(s) to scan for routes/route-configurations which can be xml, yaml or java files
     #routes-include-pattern: classpath:unloadedroutes/*
-    routes-include-pattern: classpath:ssl2/*, classpath:no_ssl/*
+    routes-include-pattern: classpath:loadedroutes/**
     #,classpath:myroutes/*
 
 

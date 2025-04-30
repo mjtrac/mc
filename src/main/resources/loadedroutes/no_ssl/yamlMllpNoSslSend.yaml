@@ -10,7 +10,8 @@
         - convertBodyTo:
             type: "java.lang.String"
         - log: "Sending: ${body.class.name} ${body}"
-        - to: "mllp://0.0.0.0:{{camel.mllp.nossl.outbound-port}}"
+        # {{ enclosed }} values from application.yaml
+        - to: "mllp://{{camel.mllp.nossl.outbound-port}}:{{camel.mllp.nossl.outbound-port}}"
         - onCompletion:
            steps:
               - log:

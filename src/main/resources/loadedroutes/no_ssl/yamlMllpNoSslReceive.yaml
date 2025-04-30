@@ -4,7 +4,8 @@
 - route:
     id: MllpNoSslReceive
     from:
-      uri: "mllp://0.0.0.0:{{camel.mllp.nossl.inbound-port}}?autoAck=true"
+      # {{ enclosed }} values from application.yaml
+      uri: "mllp://{{camel.mllp.nossl.inbound-host}}:{{camel.mllp.nossl.inbound-port}}?autoAck=true"
       steps:
         - log:
             message: "Body: ${body.replaceAll('\\r','\\n')}"
