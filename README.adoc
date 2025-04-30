@@ -42,10 +42,9 @@ Beware: this is more a learning experience product than anything
 showing best practices.  Still, it provides one path to follow
 should you run into trouble getting started on something similar.
 
-
 === How to run
 
-You can run this example using
+You can run this example by installing Java21 and maven and using
 
     mvn spring-boot:run
 
