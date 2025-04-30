@@ -85,21 +85,21 @@ in this document.
 
 ==== Wireshark screen caps:
 
-image::images/Unsecured1.png
+image::images/Unsecured1.png[]
 
-image::images/Unsecured2.png
+image::images/Unsecured2.png[]
 
-image::images/SSL.png
+image::images/SSL.png[]
 
 ==== Debug output (with SSL debugging)
 
-image::images/UnsecuredSendOutput.png
+image::images/UnsecuredSendOutput.png[]
 
-image::images/UnsecuredRcvOutput.png
+image::images/UnsecuredRcvOutput.png[]
 
-image::images/SecuredRcvAndForwardOutput.png
+image::images/SecuredRcvAndForwardOutput.png[]
 
-==== Route Management Screen /api/routes2
+==== Route Management Screen /api/routes2[]
 
-image::images/RouteManagement.png
+image::images/RouteManagement.png[]
 
