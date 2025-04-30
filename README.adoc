@@ -9,11 +9,35 @@ Once you see the "Completed initialization in x ms" message,
 you can point a web browser to localhost:8080/api/routes2
 to see the loaded routes, and to localhost:8080/api/routes2/load
 to load a valid yaml file route
-or enter valid yaml text to create a route.
+or enter valid yaml text to create a route.  (Kaoto is a
+wonderful tool for creating yaml routes.)
 
 If the entered yaml is not valid it will not load but there
 will be no message.  If it is valid you will see it when
-your browser is redirected to /api/routes2.
+your browser is redirected to /api/routes2.  Because the pom.xml
+file includes the dependency camel-spring-boot-starter,
+yaml routes should be able to use the following components without
+needing adding dependencies:
+
+* bean: Invokes methods on Java beans registered in the Camel registry.
+* browse: Inspects messages received on endpoints that support browsing.
+* controlbus: Manages and monitors Camel routes.   
+* dataformat: Uses Camel data formats as regular Camel components.
+* dataset: Provides data for load and soak testing.
+* direct: Calls another endpoint within the same Camel context synchronously.   
+* language: Executes scripts in various languages supported by Camel (e.g., simple, groovy, etc.).   
+* log: Logs message data.
+* mock: Mocks endpoints for testing routes.
+* ref: Routes messages to endpoints looked up dynamically in the Camel registry.   
+* rest: Exposes and consumes RESTful services.
+* saga: Implements the Saga pattern for distributed transactions.
+* scheduler: Generates messages at specified intervals using java.util.concurrent.ScheduledExecutorService.
+* seda: Asynchronously calls another endpoint within the same JVM.   
+* stub: Stubs out physical endpoints during development or testing.
+* timer: Generates messages at specified intervals using java.util.Timer.
+* validator: Validates message payloads using XML schema.
+* xpath: Evaluates XPath expressions.
+* xslt: Transforms XML payloads using XSLT templates.   
 
 You can Stop and Suspend routes.  Stopped or suspended routes
 can be Started.
