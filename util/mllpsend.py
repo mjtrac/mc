@@ -21,6 +21,6 @@ def send_secure_hl7_message(host, port, message, ca_cert="../test.crt"):
             return response.decode('utf-8')
 
 # Example usage
-hl7_message = "MSH|^~\\&|SENDAPP|SENDFAC|RECVAPP|RECVFAC|20250430000000||ADT^A01|123456|P|2.3\rPID|1||12345^^^HOSP^MR||Doe^John\r"
+hl7_message = "MSH|^~\\&|SENDAPP|SENDFAC|RECVAPP|RECVFAC|20250430000000||ADT^A01|MSG00001|P|2.3\rPID|1||12345^^^HOSP^MR||Doe^John\r"
 ack = send_secure_hl7_message('localhost', 15679, hl7_message, ca_cert='../test.crt')
 print(ack)
