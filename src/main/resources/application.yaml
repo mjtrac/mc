@@ -1,7 +1,13 @@
 logging:
   level:
+    root: INFO
     org.apache.camel.component.mllp: DEBUG
-
+  file:
+    name: logs/mitchconnect.log
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    console: "" # Console logging disabled
+    
 management:
   endpoints:
     web:

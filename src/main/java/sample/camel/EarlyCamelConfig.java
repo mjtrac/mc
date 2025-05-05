@@ -26,7 +26,6 @@ public class EarlyCamelConfig {
 
     @Bean
     public RoutePolicyFactory loggingRoutePolicyFactory() {
-	System.out.println("About to return new LoggingRoutePolicyFactory");
         return new LoggingRoutePolicyFactory();
     }
 
@@ -35,7 +34,6 @@ public class EarlyCamelConfig {
         return new CamelContextConfiguration() {
             @Override
             public void beforeApplicationStart(CamelContext context) {
-		System.out.println("About to call addRoutePolicyFactory");
                 context.addRoutePolicyFactory(factory);
             }
 
