@@ -5,6 +5,15 @@ messages via MLLP. It logs the messages to a SQLite database
 in its toplevel directory.  It also includes sample yaml 
 routes for sending and receiving without SSL.
 
+In addition to sending messages to the various routes' ports,
+you can communicate with the application at
+http://localhost:8080/api/routes2 and /api/routes2/load.
+
+Everything under /api requires that you login as user "admin"
+with password "password".
+
+To logout, go to http://localhost:8080/logout.
+
 Once you see the "Completed initialization in x ms" message,
 you can point a web browser to localhost:8080/api/routes2
 to see the loaded routes, and to localhost:8080/api/routes2/load
