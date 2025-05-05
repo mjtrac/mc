@@ -54,21 +54,24 @@ and five seconds.  (These are suitable routes to load via
 http://localhost:8080/api/routes2/load or the button on 
 http://localhost:8080/api/routes2.)
 
-Some of the listed routes (the DB routes) are just present
-and more or less irrelevant; src/main/ssl2/yamlMllpSslRoute.yaml
-shows a call to jdbc which writes to the SQLite database
-at mydata.db, configured in application.yaml. To prevent the
-yamlMllpSslRoute from failing for lack of that db file,
-the one line call is commented out with an explanation.
-If you create an empty mydata.db, then you can use the body
-shown in the createTable route to create a suitable table:
- .setBody(simple("CREATE TABLE IF NOT EXISTS mytable 
+All message initial bodies are logged to a database table via
+"RoutePolicy."  As distributed, the database is a SQLite3
+file located in the root folder as mydata.db, which 
+is created with the following command, and the initial value
+of every exchange's in message body is recorded along with
+the route and the datetime of the recording.
+(HL7 messages use \r as segment ends, not \n, and so lines
+may overwrite one another when presented.)
+.setBody(simple("CREATE TABLE IF NOT EXISTS mytable 
  (id INTEGER PRIMARY KEY AUTOINCREMENT, 
  name VARCHAR(255),value VARCHAR(4096), 
  created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
  route VARCHAR(255)"))
  .to("jdbc:dataSource");
 
+Routes will work even without the database, but each message
+will generate a lengthy log message about the inability to
+write to the database.
 
 For the sending route to send, place a valid HL7v2 message
 in /tmp/hl7msg.txt.  Once sent, it will be moved
