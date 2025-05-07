@@ -52,7 +52,7 @@ needing adding dependencies:
 * xslt: Transforms XML payloads using XSLT templates.   
 
 You can Stop and Suspend routes.  Stopped or suspended routes
-can be Started.
+can be Started or Removed.
 
 The application.yaml file is in src/main/resources, and keystore
 and truststore and port information is under camel: mllp: ssl:
@@ -65,6 +65,11 @@ and hello2.yaml, which just write to the log every two
 and five seconds.  (These are suitable routes to load via 
 http://localhost:8080/ui/routes/load or the button on 
 http://localhost:8080/ui/routes.)
+
+The preloaded mllp forwarding route can be tested by going
+to util and running python3 mllpreceive.py to start an SSL-secured
+listener on port 15678 and then, in another shell,
+running python3 mllpsend.py to send with SSL to port 15679.
 
 All message initial bodies are logged to a database table via
 "RoutePolicy." 
@@ -93,18 +98,26 @@ should you run into trouble getting started on something similar.
 If you are just exploring the Camel and Spring Boot combo,
 please note that Kaoto is a fantastic open source yaml route
 graphical designer, and you can use Jconsole to look at route
-statistics.  Adding interceptor routines to log all incoming
-messages on certain routes is also made straightforward, and
-it is easy to swap in different databases.
+statistics.  
+
+Wireshark is useful for confirming that traffic is encrypted.
+
+DB Browser for SQLite is useful for examining the messages
+written to database.
 
 === How to run
 
-You can run this example by installing Java 21 and maven and using
+You can run this example by installing Java 21+ and maven (I'm using 3.9.9)
+and using +
 
-    mvn clean spring-boot:run
+    `mvn clean spring-boot:run` +
+    or +
+    `mvn clean install` +
+    `java -jar target/mc-1.0.0-SNAPSHOT.jar` +
 
 Note: I've built on MacOS using openjdk 23.0.2. The first run will
 result in a large number of downloads to your local maven repository.
+
 === Help and contributions
 
 This is an in-progress hobby-level effort, and I am by no means

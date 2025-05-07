@@ -61,6 +61,9 @@
                         <form th:action="@{/ui/routes/{routeId}/start(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Stopped' or entry.value[0] == 'Suspended'}">Start</button>
                         </form>
+                        <form th:action="@{/ui/routes/{routeId}/remove(routeId=${entry.key})}" method="post">
+                            <button type="submit" th:if="${entry.value[0] == 'Stopped' or entry.value[0] == 'Suspended'}">Remove</button>
+                        </form>
                         <form th:action="@{/ui/routes/{routeId}/stop(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Started'}">Stop</button>
                         </form>
