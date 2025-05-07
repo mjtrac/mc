@@ -1,0 +1,61 @@
+2025-05-06 08:30:36 - Starting MitchConnect using Java 23.0.2 with PID 15240 (/Users/mjtrac/Library/CloudStorage/OneDrive-Personal/mc/target/classes started by mjtrac in /Users/mjtrac/Library/CloudStorage/OneDrive-Personal/mc)
+2025-05-06 08:30:36 - No active profile set, falling back to 1 default profile: "default"
+2025-05-06 08:30:37 - Tomcat initialized with port 8080 (http)
+2025-05-06 08:30:37 - Starting service [Tomcat]
+2025-05-06 08:30:37 - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-05-06 08:30:37 - Initializing Spring embedded WebApplicationContext
+2025-05-06 08:30:37 - Root WebApplicationContext: initialization completed in 1026 ms
+2025-05-06 08:30:37 - User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2025-05-06 08:30:37 - Global AuthenticationManager configured with UserDetailsService bean with name users
+2025-05-06 08:30:37 - Exposing 3 endpoints beneath base path '/actuator'
+2025-05-06 08:30:38 - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-06 08:30:38 - Initialized CamelHttpTransportServlet[name=CamelServlet, contextPath=]
+2025-05-06 08:30:38 - Tomcat started on port 8080 (http) with context path '/'
+2025-05-06 08:30:38 - Apache Camel 4.10.0 (CamelSpringBootMllpSslDemo) is starting
+2025-05-06 08:30:38 - hapi.home is set to /Users/mjtrac/Library/CloudStorage/OneDrive-Personal/mc/.
+2025-05-06 08:30:38 - HAPI version is: 2.6.0
+2025-05-06 08:30:38 - Default Structure libraries found for HL7 versions 2.5, 
+2025-05-06 08:30:38 - Starting CamelMainRunController to ensure the main thread keeps running
+2025-05-06 08:30:38 - Apache Camel (Main) 4.10.0 is starting
+2025-05-06 08:30:38 - doStart() - attempting to bind to port 15679
+2025-05-06 08:30:38 - Initializing SSLContextParameters
+2025-05-06 08:30:38 - Debugger JMXConnector listening at: service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi/camel
+2025-05-06 08:30:38 - Attempting to bind to /0.0.0.0:15679
+2025-05-06 08:30:38 - Starting ServerSocket accept thread for [SSL: ServerSocket[addr=/0.0.0.0,localport=15679]]
+2025-05-06 08:30:38 - doStart() - attempting to bind to port 15681
+2025-05-06 08:30:38 - Attempting to bind to /0.0.0.0:15681
+2025-05-06 08:30:38 - Starting ServerSocket accept thread for ServerSocket[addr=/0.0.0.0,localport=15681]
+2025-05-06 08:30:38 - Routes startup (total:7)
+2025-05-06 08:30:38 -     Started logToDatabase (direct://logToDatabase)
+2025-05-06 08:30:38 -     Started selectMessageFromDB (direct://select)
+2025-05-06 08:30:38 -     Started createDB (direct://createTable)
+2025-05-06 08:30:38 -     Started initRoute (direct://init)
+2025-05-06 08:30:38 -     Started MllpSSLForwardingRoute (mllp://0.0.0.0:15679)
+2025-05-06 08:30:38 -     Started MllpNoSslReceive (mllp://0.0.0.0:15681)
+2025-05-06 08:30:38 -     Started MllpNoSslSend (file:///tmp)
+2025-05-06 08:30:38 - Apache Camel 4.10.0 (CamelSpringBootMllpSslDemo) started in 245ms (build:0ms init:0ms start:245ms)
+2025-05-06 08:30:38 - Enabling Camel debugger
+2025-05-06 08:30:38 - Started MitchConnect in 2.89 seconds (process running for 3.085)
+2025-05-06 08:30:40 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-06 08:30:40 - Initializing Servlet 'dispatcherServlet'
+2025-05-06 08:30:40 - Completed initialization in 1 ms
+2025-05-06 08:31:38 - Timeout waiting for client connection - keep listening
+2025-05-06 08:31:38 - Timeout waiting for client connection - keep listening
+2025-05-06 08:32:38 - Timeout waiting for client connection - keep listening
+2025-05-06 08:32:38 - Timeout waiting for client connection - keep listening
+2025-05-06 08:32:42 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-06 08:32:44 - Graceful shutdown complete
+2025-05-06 08:32:44 - Disabling Camel debugger
+2025-05-06 08:32:44 - Apache Camel 4.10.0 (CamelSpringBootMllpSslDemo) is shutting down (timeout:45s)
+2025-05-06 08:32:44 - ServerSocket.accept loop finished - closing listener
+2025-05-06 08:32:44 - ServerSocket.accept loop finished - closing listener
+2025-05-06 08:32:44 - Routes stopped (total:7)
+2025-05-06 08:32:44 -     Stopped MllpNoSslSend (file:///tmp)
+2025-05-06 08:32:44 -     Stopped MllpNoSslReceive (mllp://0.0.0.0:15681)
+2025-05-06 08:32:44 -     Stopped MllpSSLForwardingRoute (mllp://0.0.0.0:15679)
+2025-05-06 08:32:44 -     Stopped initRoute (direct://init)
+2025-05-06 08:32:44 -     Stopped createDB (direct://createTable)
+2025-05-06 08:32:44 -     Stopped selectMessageFromDB (direct://select)
+2025-05-06 08:32:44 -     Stopped logToDatabase (direct://logToDatabase)
+2025-05-06 08:32:44 - Apache Camel 4.10.0 (CamelSpringBootMllpSslDemo) shutdown in 22ms (uptime:2m5s)
+2025-05-06 08:32:44 - Destroyed CamelHttpTransportServlet[CamelServlet]

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package sample.camel;
+package sample.camel.ui;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
@@ -53,14 +53,16 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.management.MalformedObjectNameException;
 import java.lang.management.ManagementFactory;
-
-
+import sample.camel.services.RouteInfoService;
+import sample.camel.services.RouteLoaderService;
+import sample.camel.services.SslUtils;
+import sample.camel.services.SslUpdateRequest;
 
 @Controller
-@RequestMapping("/api")
-public class RouteManagementController {
+@RequestMapping("/ui")
+public class RouteUIController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RouteManagementController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RouteUIController.class);
     
     @Autowired
     private CamelContext camelContext;
@@ -72,100 +74,110 @@ public class RouteManagementController {
     private AtomicReference<SSLContextParameters> sslRef;
 
     @Autowired
-    private RouteLoaderService routeLoaderService; // Inject RouteLoaderService
+    private RouteLoaderService routeLoaderService; 
 
-    @Autowired RouteInfoService routeInfoService;
+    @Autowired
+    RouteInfoService routeInfoService;
 
-    @Autowired Ris ris;
-    
-    // List all routes
-    @GetMapping("/routes")
-    public List<Map<String, String>> listRoutes() {
-	System.out.println("In listRoutes via /routes");
-        return camelContext.getRoutes().stream().map(route -> Map.of(
-            "id", route.getId(),
-            "status", camelContext.getRouteController().getRouteStatus(route.getId()).name()
-        )).collect(Collectors.toList());
+    @GetMapping("/")
+    public String listRoutesToUI(Model model) {
+	    String contextId = camelContext.getName();
+	    List<Map<String, List<String>>> routes = routeInfoService.getRouteDetailsAsMapIdToList();
+	    model.addAttribute("routes", routes);
+        return "routes";  // Points to src/main/resources/templates/routes.html
     }
-
+	
     // List all routes using Thymeleaf
-    @GetMapping("/routes2")
+    @GetMapping("/routes")
     public String listRoutesWithT(Model model) {
 	    String contextId = camelContext.getName();
-	    List<Map<String, List<String>>> routes2 = routeInfoService.getRouteDetailsAsMapIdToList();
-	    model.addAttribute("routes2", routes2);
-        return "routes2";  // Points to src/main/resources/templates/routes.html
+	    List<Map<String, List<String>>> routes = routeInfoService.getRouteDetailsAsMapIdToList();
+	    model.addAttribute("routes", routes);
+        return "routes";  // Points to src/main/resources/templates/routes.html
     }
 
     // Start a specific route
-    @PostMapping("/routes2/{routeId}/start")
-    public RedirectView startRoute(@PathVariable("routeId") String routeId, Model model) {
-	LOG.error("In startRoute via /routes/.../start");
+    @PostMapping("/routes/{routeId}/start")
+    public String startRoute(@PathVariable("routeId") String routeId, RedirectAttributes redirectAttributes){
+	LOG.info("In startRoute via /routes/.../start");
         try {
             camelContext.getRouteController().startRoute(routeId);
-            return new RedirectView("/api/routes2");//ResponseEntity.ok("Route started: " + routeId);
+	    redirectAttributes.addFlashAttribute("message", "Started route: " + routeId);
         } catch (Exception e) {
-            return new RedirectView("/api/routes2");//ResponseEntity.status(500).body("Failed to stop route: " + e.getMessage());
+	    redirectAttributes.addFlashAttribute("error", "Failed to start route: " + e.getMessage());
         }
+            return "redirect:/ui/routes";
     }
 
     // Stop a specific route
-    @PostMapping("/routes2/{routeId}/stop")
-    public RedirectView stopRoute(@PathVariable("routeId") String routeId, Model model) {
-	LOG.error("In stopRoute via /routes/.../stop");
-	LOG.warn(String.valueOf(ris.getCompletedExchanges(camelContext.getRoute(routeId))));
+    @PostMapping("/routes/{routeId}/stop")
+    public String stopRoute(@PathVariable("routeId") String routeId, RedirectAttributes redirectAttributes){
+	LOG.info("In stopRoute via /routes/.../stop");
         try {
             camelContext.getRouteController().stopRoute(routeId);
-            return new RedirectView("/api/routes2");//ResponseEntity.ok("Route stopped: " + routeId);
+	    redirectAttributes.addFlashAttribute("message", "Stopped route: " + routeId);
         } catch (Exception e) {
-            return new RedirectView("/api/routes2");//ResponseEntity.status(500).body("Failed to stop route: " + e.getMessage());
+	    redirectAttributes.addFlashAttribute("error", "Failed to stop route: " + e.getMessage());
         }
+            return "redirect:/ui/routes";
     }
 
     // Suspend a specific route
-    @PostMapping("/routes2/{routeId}/suspend")
-    public RedirectView suspendRoute(@PathVariable("routeId") String routeId, Model model) {
-	LOG.error("In stopRoute via /routes/.../suspend");
+    @PostMapping("/routes/{routeId}/suspend")
+    public String suspendRoute(@PathVariable("routeId") String routeId, Model model) {
+	LOG.info("In suspendRoute via /routes/.../suspend");
         try {
             camelContext.getRouteController().suspendRoute(routeId);
-            return new RedirectView("/api/routes2");//ResponseEntity.ok("Route suspended: " + routeId);
+            return "redirect:/ui/routes";
         } catch (Exception e) {
-            return new RedirectView("/api/routes2");//ResponseEntity.status(500).body("Failed to suspend route: " + e.getMessage());
+            return "redirect:/ui/routes";
+        }
+    }
+
+    // Remove a specific route
+    @PostMapping("/routes/{routeId}/remove")
+    public String removeRoute(@PathVariable("routeId") String routeId, Model model) {
+	LOG.info("In removeRoute via /routes/.../remove");
+        try {
+            camelContext.getRouteController().stopRoute(routeId);
+            camelContext.removeRoute(routeId);
+            return "redirect:/ui/routes";
+        } catch (Exception e) {
+            return "redirect:/ui/routes";
         }
     }
 
     // Dynamically load a YAML route
-    @GetMapping("/routes2/load")
+    @GetMapping("/routes/load")
     public String showRouteForm(Model model) {
 	return "route-form";
     }
     
-    @PostMapping("/routes2/loadtext")
-    public RedirectView loadRouteText(@RequestParam("yaml_content") String yamlContent, RedirectAttributes redirectAttributes) {
+    @PostMapping("/routes/loadtext")
+    public String loadRouteText(@RequestParam("yaml_content") String yamlContent, RedirectAttributes redirectAttributes) {
 	try (InputStream is = new ByteArrayInputStream(yamlContent.getBytes(StandardCharsets.UTF_8))) {
 	    routeLoaderService.addRouteFromYaml(is);
-	    LOG.error("RouteLoaderService no exception");
-            return new RedirectView("/api/routes2");
+	    LOG.info("RouteLoaderService no exception");
+            return "redirect:/ui/routes";
 	} catch (Exception e) {
 	    //LOG(e.printStackTrace());
 	    //LOG.error(e);
 	    redirectAttributes.addFlashAttribute("error",e.getMessage());
-	    LOG.error("RouteLoaderService " + e.getMessage());
-	    return new RedirectView("/api/routes2/loadtext");
+	    LOG.warn("RouteLoaderService " + e.getMessage());
+	    return "redirect:/ui/routes";
 	}
 	
     }
 
-    @PostMapping("/routes2/loadfile")
-    public RedirectView loadRouteFile(@RequestParam("yamlFile") MultipartFile file, Model model)  {
-	System.out.println(model);
+    @PostMapping("/routes/loadfile")
+    public String loadRouteFile(@RequestParam("yamlFile") MultipartFile file, Model model)  {
 	try {
 	    InputStream fileInputStream = file.getInputStream();
 	    routeLoaderService.addRouteFromYaml(fileInputStream);
-	    return new RedirectView("/api/routes2");
+	    return "redirect:/ui/routes";
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    return new RedirectView("/api/routes2/load");
+	    return "redirect:/ui/routes";
 	    
 	    }
     }
