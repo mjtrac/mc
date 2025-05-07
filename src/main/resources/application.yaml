@@ -84,7 +84,7 @@ camel:
 #        password: "password"
 #        resource: file:/Users/mjtrac/test.jks
   springboot:
-    name: CamelSpringBootMllpSslDemo
+    name: MitchConnect
 
     # keep Camel running
     main-run-controller: true

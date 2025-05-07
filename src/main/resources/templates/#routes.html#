@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Route Management</title>
+  <link rel="stylesheet" th:href="@{/css/normalize.css}">
+</head>
+<body>
+  <h1>Routes</h1>
+  <div th:each="route : ${routes}"><p th:text="${route}"></p></div>
+  <ul>
+    <li th:each="routeMap : ${routes}">
+      <div th:each="entry : ${routeMap.entrySet()}">
+	<strong>ID:<span th:text="${entry.key}"></span></strong>
+	<ul><li th:each="detail : ${entry.value}">
+	    <span th:text="${detail}"></span>
+	  </li>
+	  <li th:text="${entry.value[0]}">
+	  </li>
+	  <li th:text="${entry.value[1]}">
+	  </li>
+	</ul>
+      </div>
+    </li>
+  </ul>
+			  
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Route ID</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="route : ${routes}">
+                <td th:text="${route.id}"></td>
+                <td th:text="${route.status}"></td>
+                <td>
+                    <form th:action="@{/ui/routes/{routeId}/start(routeId=${route.id})}" method="post">
+                        <button type="submit" th:if="${route.status == 'Stopped'}">Start</button>
+                    </form>
+                    <form th:action="@{/ui/routes/{routeId}/unload(routeId=${route.id})}" method="post">
+                        <button type="submit" th:if="${route.status == 'Stopped'}">Unload</button>
+                    </form>
+                    <form th:action="@{/ui/routes/{routeId}/stop(routeId=${route.id})}" method="post">
+                        <button type="submit" th:if="${route.status == 'Started'}">Stop</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table-->
+</body>
+</html>

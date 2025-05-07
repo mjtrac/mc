@@ -1,4 +1,4 @@
-package sample.camel;
+package sample.camel.services;
 
 import org.apache.camel.support.jsse.*;
 

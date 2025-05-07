@@ -1,4 +1,4 @@
-package sample.camel;
+package sample.camel.ui;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
@@ -38,11 +38,13 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.management.MalformedObjectNameException;
 import java.lang.management.ManagementFactory;
-
-
+import sample.camel.services.RouteInfoService;
+import sample.camel.services.RouteLoaderService;
+import sample.camel.services.SslUtils;
+import sample.camel.services.SslUpdateRequest;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/ui")
 public class RouteManagementController {
 
     private static final Logger LOG = LoggerFactory.getLogger(RouteManagementController.class);
@@ -61,8 +63,6 @@ public class RouteManagementController {
 
     @Autowired RouteInfoService routeInfoService;
 
-    @Autowired Ris ris;
-    
     // List all routes
     @GetMapping("/routes")
     public List<Map<String, String>> listRoutes() {
@@ -98,7 +98,6 @@ public class RouteManagementController {
     @PostMapping("/routes2/{routeId}/stop")
     public RedirectView stopRoute(@PathVariable("routeId") String routeId, Model model) {
 	LOG.error("In stopRoute via /routes/.../stop");
-	LOG.warn(String.valueOf(ris.getCompletedExchanges(camelContext.getRoute(routeId))));
         try {
             camelContext.getRouteController().stopRoute(routeId);
             return new RedirectView("/api/routes2");//ResponseEntity.ok("Route stopped: " + routeId);

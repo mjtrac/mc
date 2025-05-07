@@ -1,4 +1,4 @@
-package sample.camel;
+package sample.camel.services;
 
 public class SslUpdateRequest {
     public String keystorePath;
