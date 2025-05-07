@@ -4,25 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/monokai.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/yaml/yaml.min.js"></script>
-<title>Load Route From File or Input</title>
+    <title>Load Route</title>
+        <style>
+      body {
+	  font-family: sans-serif;
+	  background-color: lightgrey;
+      }
+      h1 {
+	  text-align: center;
+      }
+      .CodeMirror {
+	  border: 1px solid #444;
+	  border-radius: 4px;
+      }
+    </style>
+
 </head>
 <body>
 
 <h2>Load a YAML Route</h2>
 
 <form action="/ui/routes/loadfile" method="POST" enctype="multipart/form-data">
-  <label for="yamlFile">YAML Path:</label>
+  <label for="yamlFile">Path to yaml file with route:</label>
+  <br/>
   <input type="file" id="yamlFile" name="yamlFile" placeholder="Choose YAML route file" required>
    
-  <button type="submit">Load Yaml File Route</button>
+  <button type="submit">Load Route from Selected File</button>
 </form>
 
 <form id="yamlForm" action="/ui/routes/loadtext" method="POST">
   <div id="yaml-editor"></div>
   <textarea name="yaml_content" id="yamlContent" style="display: none;"></textarea>
-  <button type="submit">Submit YAML</button>
+  <button type="submit">Submit YAML route from editor</button>
 
 
 <script>
@@ -43,6 +59,7 @@
 </form>
 <!-- Display message (success or error) -->
 <div>
+  <p th:text="${session.message}"></p>
   <p th:text="${message}"></p>
 </div>
 </body>

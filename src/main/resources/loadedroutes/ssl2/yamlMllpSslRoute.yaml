@@ -9,27 +9,8 @@
         # Capture message body in header
         # so body can become an insert statement for jdbc
         - setHeader:
-            name: originalBody
-            simple: "${body}"
-        - setHeader:
             name: camelRoute
             simple: "MllpSSLForwardingRoute"
-        - setBody:
-            simple: "INSERT INTO mytable (route, name, value) VALUES ('${header.camelRoute}', 'body', '${header.originalBody}')"
-        # All routes now automatically write their initial message
-        # to the jdbc dataSource, so this call is no longer needed.
-        # The db write is via RoutePolicy, in
-        # ./src/main/java/sample/camel/LoggingRoutePolicyFactory.java
-        # Call jdbc *************************************************
-        # (this requires that you have a SQLite file named mydata.db
-        # with a table mytable that has route, name, and value fields)
-        # The call is commented out so that lack of that file does not
-        # prevent this route from running.
-        #- to: "jdbc:dataSource"
-        # **********************************************************
-        # Restore the original body
-        - setBody:
-            simple: "${header.originalBody.toString()}"
         # {{ enclosed }} values defined in application.yaml
         # Ssl using params from Java bean mysslContextParameters
         - to: "mllp://{{camel.mllp.ssl.outbound.host}}:{{camel.mllp.ssl.outbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"

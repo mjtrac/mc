@@ -25,7 +25,7 @@ server:
 spring:
   boot:
     run:
-      jvmArguments: -Djavax.net.debug=ssl,handshake,certpath
+      #jvmArguments: -Djavax.net.debug=ssl,handshake,certpath
   dataSource:
     url: jdbc:sqlite:mydata.db
     driver-class-name: org.sqlite.JDBC

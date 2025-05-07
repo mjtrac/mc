@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Route Management 2</title>
+    <title>Routes Dashboard</title>
     <!--link rel="stylesheet" th:href="@{/css/normalize.css}"-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -11,11 +11,19 @@
     $('#routesTable').DataTable();
   });
 </script>
+    <style>
+      body {
+	  font-family: sans-serif;
+	  background-color: lightgrey;
+      }
+      h1 {
+	  text-align: center;
+      }
+    </style>
     
 </head>
 <body>
-  <h1>Routes</h1>
-  <h3>Click button to load a new temporary route from text or file</h3>
+  <h1>Mitch Connect</h1>
   <div th:if="${session.message}">
     <p th:text="${session.message}"></p>
   </div>
@@ -24,8 +32,9 @@
   </div>
 
   <a href="/ui/routes/load">
-  <button type="button">New temporary route</button>
-</a>  
+  <button type="button">Click to load new temporary route</button>
+  </a>  
+  <h2>Routes</h2>
     <table id="routesTable" border="1">
         <thead>
             <tr>
@@ -48,6 +57,7 @@
                     <td th:text="${entry.value[3]}"></td>
                     <td th:text="${entry.value[4]}"></td>
                     <td>
+		      <div style="display: flex; gap: 1rem;">
                         <form th:action="@{/ui/routes/{routeId}/start(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Stopped' or entry.value[0] == 'Suspended'}">Start</button>
                         </form>
@@ -57,6 +67,7 @@
                         <form th:action="@{/ui/routes/{routeId}/suspend(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Started'}">Suspend</button>
                         </form>
+			</div>
                     </td>
                 </th:block>
             </tr>
