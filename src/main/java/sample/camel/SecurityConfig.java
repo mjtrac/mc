@@ -25,7 +25,9 @@ public class SecurityConfig {
 			   .anyRequest().authenticated()
 				   )
 	    .httpBasic(Customizer.withDefaults())
-	    .formLogin();
+	    .formLogin(form -> form
+		       .defaultSuccessUrl("/ui/routes", true) 
+		       .permitAll());
 	return http.build();
     }
 

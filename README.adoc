@@ -7,23 +7,26 @@ routes for sending and receiving without SSL.
 
 In addition to sending messages to the various routes' ports,
 you can communicate with the application at
-http://localhost:8080/api/routes2 and /api/routes2/load.
+http://localhost:8080/ui/routes and /ui/routes/load.
 
-Everything under /api requires that you login as user "admin"
+Everything under /ui requires that you login as user "admin"
 with password "password".
+
+The same functionality is available via
+http://localhost:8080/swagger-ui/index.html
 
 To logout, go to http://localhost:8080/logout.
 
 Once you see the "Completed initialization in x ms" message,
-you can point a web browser to localhost:8080/api/routes2
-to see the loaded routes, and to localhost:8080/api/routes2/load
+you can point a web browser to localhost:8080/ui/routes
+to see the loaded routes, and to localhost:8080/ui/routes/load
 to load a valid yaml file route
 or enter valid yaml text to create a route.  (Kaoto is a
 wonderful tool for creating yaml routes.)
 
 If the entered yaml is not valid it will not load but there
 will be no message.  If it is valid you will see it when
-your browser is redirected to /api/routes2.  Because the pom.xml
+your browser is redirected to /ui/routes.  Because the pom.xml
 file includes the dependency camel-spring-boot-starter,
 yaml routes should be able to use the following components without
 needing adding dependencies:
@@ -60,27 +63,24 @@ Routes under src/main/resources/loadedroutes are loaded on startup;
 routes in src/main/resources/unloadedroutes include hello.yaml 
 and hello2.yaml, which just write to the log every two 
 and five seconds.  (These are suitable routes to load via 
-http://localhost:8080/api/routes2/load or the button on 
-http://localhost:8080/api/routes2.)
+http://localhost:8080/ui/routes/load or the button on 
+http://localhost:8080/ui/routes.)
 
 All message initial bodies are logged to a database table via
-"RoutePolicy."  As distributed, the database is a SQLite3
+"RoutePolicy." 
+As distributed, the database is a SQLite3
 file located in the root folder as mydata.db, which 
 is created with the following command, and the initial value
-of every exchange's in message body is recorded along with
+of every exchange's "in" message body is recorded along with
 the route and the datetime of the recording.
 (HL7 messages use \r as segment ends, not \n, and so lines
 may overwrite one another when presented.)
-.setBody(simple("CREATE TABLE IF NOT EXISTS mytable 
+CREATE TABLE IF NOT EXISTS mytable 
  (id INTEGER PRIMARY KEY AUTOINCREMENT, 
  name VARCHAR(255),value VARCHAR(4096), 
  created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
- route VARCHAR(255)"))
+ route VARCHAR(255)"
  .to("jdbc:dataSource");
-
-Routes will work even without the database, but each message
-will generate a lengthy log message about the inability to
-write to the database.
 
 For the sending route to send, place a valid HL7v2 message
 in /tmp/hl7msg.txt.  Once sent, it will be moved
@@ -101,8 +101,10 @@ it is easy to swap in different databases.
 
 You can run this example by installing Java 21 and maven and using
 
-    mvn spring-boot:run
+    mvn clean spring-boot:run
 
+Note: I've built on MacOS using openjdk 23.0.2. The first run will
+result in a large number of downloads to your local maven repository.
 === Help and contributions
 
 This is an in-progress hobby-level effort, and I am by no means

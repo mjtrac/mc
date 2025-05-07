@@ -64,7 +64,7 @@ public class RouteUIController {
     @Autowired
     RouteInfoService routeInfoService;
 
-    // @GetMapping("/")
+    @GetMapping("/")
     public String listRoutesToUI(Model model) {
 	    String contextId = camelContext.getName();
 	    List<Map<String, List<String>>> routes = routeInfoService.getRouteDetailsAsMapIdToList();
@@ -113,9 +113,22 @@ public class RouteUIController {
 	LOG.info("In suspendRoute via /routes/.../suspend");
         try {
             camelContext.getRouteController().suspendRoute(routeId);
-            return "routes";
+            return "redirect:/ui/routes";
         } catch (Exception e) {
-            return "routes";
+            return "redirect:/ui/routes";
+        }
+    }
+
+    // Remove a specific route
+    @PostMapping("/routes/{routeId}/remove")
+    public String removeRoute(@PathVariable("routeId") String routeId, Model model) {
+	LOG.info("In removeRoute via /routes/.../remove");
+        try {
+            camelContext.getRouteController().stopRoute(routeId);
+            camelContext.removeRoute(routeId);
+            return "redirect:/ui/routes";
+        } catch (Exception e) {
+            return "redirect:/ui/routes";
         }
     }
 
@@ -130,13 +143,13 @@ public class RouteUIController {
 	try (InputStream is = new ByteArrayInputStream(yamlContent.getBytes(StandardCharsets.UTF_8))) {
 	    routeLoaderService.addRouteFromYaml(is);
 	    LOG.info("RouteLoaderService no exception");
-            return "routes";
+            return "redirect:/ui/routes";
 	} catch (Exception e) {
 	    //LOG(e.printStackTrace());
 	    //LOG.error(e);
 	    redirectAttributes.addFlashAttribute("error",e.getMessage());
 	    LOG.warn("RouteLoaderService " + e.getMessage());
-	    return "routes";
+	    return "redirect:/ui/routes";
 	}
 	
     }
@@ -146,10 +159,10 @@ public class RouteUIController {
 	try {
 	    InputStream fileInputStream = file.getInputStream();
 	    routeLoaderService.addRouteFromYaml(fileInputStream);
-	    return "routes";
+	    return "redirect:/ui/routes";
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    return "routes";
+	    return "redirect:/ui/routes";
 	    
 	    }
     }

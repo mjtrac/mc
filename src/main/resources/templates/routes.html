@@ -16,7 +16,14 @@
 <body>
   <h1>Routes</h1>
   <h3>Click button to load a new temporary route from text or file</h3>
-<a href="/ui/routes/load">
+  <div th:if="${session.message}">
+    <p th:text="${session.message}"></p>
+  </div>
+  <div th:if="${session.error}">
+    <p th:text="${session.error}"></p>
+  </div>
+
+  <a href="/ui/routes/load">
   <button type="button">New temporary route</button>
 </a>  
     <table id="routesTable" border="1">
@@ -55,7 +62,10 @@
             </tr>
         </tbody>
 </table>
-    <div>New routes can be loaded from a file or at /api/routes2/load but are not yet saved in any way if loaded from text.</div>
+    <div>The user interface is at /ui/routes.  The api uses /api/routes2 and
+      is most easily accessed at /swagger-ui/index.html (which is not currently
+      password protected.  Password protection is weak right now and will
+    be replaced.</div>
     <div>The MLLP route receives an encrypted HL7v2 message on one port, forwards it using encryption to another port, and returns the reply from the final port to the original sender.  The truststore and keystore files and passwords are set in the application.yaml file, as are the routes, under camel/mllp/ssl. </div> 
     <div> The No SSL send and receive routes pick up ports from camel/mllp/nossl
       </div>

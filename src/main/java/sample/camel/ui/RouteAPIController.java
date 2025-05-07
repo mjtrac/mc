@@ -107,6 +107,18 @@ public class RouteAPIController {
         }
     }
     
+    // Suspend a specific route
+    @PostMapping("/routes2/{routeId}/remove")
+    public String removeRoute(@PathVariable("routeId") String routeId, Model model) {
+	LOG.info("In removeRoute via /routes/.../remove");
+        try {
+            camelContext.removeRoute(routeId);
+            return "Removed " + routeId;
+        } catch (Exception e) {
+            return "Failed to remove " + routeId + ": " + e.getMessage();
+        }
+    }
+    
     @PostMapping("/routes2/loadtext")
     public String loadRouteText(String yamlContent) {
 	try (InputStream is = new ByteArrayInputStream(yamlContent.getBytes(StandardCharsets.UTF_8))) {
