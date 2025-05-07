@@ -26,7 +26,9 @@ public class StartupMessageRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Your custom message after Spring Boot startup
         System.out.println("MitchConnect is now running.");
-        System.out.println("For loaded routes, see http://localhost:8080/api/routes2");
+        System.out.println("For loaded routes, see http://localhost:8080/ui/routes");
+	System.out.println("User: admin  password: password");
+	System.out.println("API at http://localhost:8080/swagger-ui/index.html");
         System.out.println("To experiment with route loading, use routes hello.yaml and hello2.yaml in src/main/resources/unloadedroutes");
 	System.out.println("To modify ports for the existing routes,");
 	System.out.println("edit src/main/resources/application.yaml and restart.");
