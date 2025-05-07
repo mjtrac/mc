@@ -12,14 +12,14 @@
 
 <h2>Load a YAML Route</h2>
 
-<form action="/api/routes2/loadfile" method="POST" enctype="multipart/form-data">
+<form action="/ui/routes/loadfile" method="POST" enctype="multipart/form-data">
   <label for="yamlFile">YAML Path:</label>
   <input type="file" id="yamlFile" name="yamlFile" placeholder="Choose YAML route file" required>
    
   <button type="submit">Load Yaml File Route</button>
 </form>
 
-<form id="yamlForm" action="/api/routes2/loadtext" method="POST">
+<form id="yamlForm" action="/ui/routes/loadtext" method="POST">
   <div id="yaml-editor"></div>
   <textarea name="yaml_content" id="yamlContent" style="display: none;"></textarea>
   <button type="submit">Submit YAML</button>

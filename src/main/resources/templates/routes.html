@@ -8,7 +8,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
   $(document).ready(function() {
-    $('#routes2Table').DataTable();
+    $('#routesTable').DataTable();
   });
 </script>
     
@@ -16,10 +16,10 @@
 <body>
   <h1>Routes</h1>
   <h3>Click button to load a new temporary route from text or file</h3>
-<a href="/api/routes2/load">
+<a href="/ui/routes/load">
   <button type="button">New temporary route</button>
 </a>  
-    <table id="routes2Table" border="1">
+    <table id="routesTable" border="1">
         <thead>
             <tr>
                 <th>Route ID</th>
@@ -32,7 +32,7 @@
             </tr>
         </thead>
         <tbody>
-<tr th:each="routeMap : ${routes2}">
+<tr th:each="routeMap : ${routes}">
                 <th:block th:each="entry : ${routeMap.entrySet()}">
                     <td th:text="${entry.key}"></td>
                     <td th:text="${entry.value[0]}"></td>
@@ -41,13 +41,13 @@
                     <td th:text="${entry.value[3]}"></td>
                     <td th:text="${entry.value[4]}"></td>
                     <td>
-                        <form th:action="@{/api/routes2/{routeId}/start(routeId=${entry.key})}" method="post">
+                        <form th:action="@{/ui/routes/{routeId}/start(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Stopped' or entry.value[0] == 'Suspended'}">Start</button>
                         </form>
-                        <form th:action="@{/api/routes2/{routeId}/stop(routeId=${entry.key})}" method="post">
+                        <form th:action="@{/ui/routes/{routeId}/stop(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Started'}">Stop</button>
                         </form>
-                        <form th:action="@{/api/routes2/{routeId}/suspend(routeId=${entry.key})}" method="post">
+                        <form th:action="@{/ui/routes/{routeId}/suspend(routeId=${entry.key})}" method="post">
                             <button type="submit" th:if="${entry.value[0] == 'Started'}">Suspend</button>
                         </form>
                     </td>
