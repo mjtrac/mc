@@ -17,6 +17,9 @@ http://localhost:8080/swagger-ui/index.html
 
 To logout, go to http://localhost:8080/logout.
 
+A video of some interaction is available here in mc_preview.mp4,
+or at youtube as https://youtu.be/uD1KBy3wZ2Y.
+
 Once you see the initial "MitchConnect" message,
 you can point a web browser to localhost:8080/ui/routes
 to see the loaded routes, and to localhost:8080/ui/routes/load
