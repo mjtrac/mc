@@ -17,7 +17,7 @@ http://localhost:8080/swagger-ui/index.html
 
 To logout, go to http://localhost:8080/logout.
 
-Once you see the "Completed initialization in x ms" message,
+Once you see the initial "MitchConnect" message,
 you can point a web browser to localhost:8080/ui/routes
 to see the loaded routes, and to localhost:8080/ui/routes/load
 to load a valid yaml file route
