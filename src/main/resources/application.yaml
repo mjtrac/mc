@@ -34,8 +34,28 @@ spring:
     suffix: ".html"
     mode: "HTML"
     encoding: "UTF-8"
-    
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: camel-client
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/login/oauth2/code/keycloak"
+            scope: openid, profile, email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8090/realms/mcrealm
+            token-uri: http://localhost:8090/realms/mcrealm/protocol/openid-connect/token
+            authorization-uri: http://localhost:8090/realms/mcrealm/protocol/openid-connect/auth
+            user-info-uri: http://localhost:8090/realms/mcrealm/protocol/openid-connect/userinfo
 
+keycloak:
+  auth-server-url: http://localhost:8090/realm/mcrealm
+  realm: mcrealm
+  public-client: true
+  bearer-only: true
+  
 camel:
   main:
     routes-builder-loader-ignore-loading-error: false
