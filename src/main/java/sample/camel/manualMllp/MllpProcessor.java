@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package sample.camel;
+package sample.camel.manualMllp;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

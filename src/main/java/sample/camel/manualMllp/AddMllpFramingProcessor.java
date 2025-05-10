@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package sample.camel;
+
+package sample.camel.manualMllp ;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.springframework.stereotype.Component;
 
-@Component
-public class MllpAckProcessor implements Processor{
 
+@Component("AddMllpFramingProcessor")
+public class AddMllpFramingProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
-        Message in = exchange.getIn();
-        byte[] ack = in.getBody(byte[].class); // Get the acknowledgement
-	exchange.setProperty("CamelMllpAcknowledgement",ack);
-        exchange.getOut().setBody(ack); //Set the acknowledgement to return to the original sender.
-	System.out.println("processAck: " + ack.length);
+        String hl7Message = exchange.getIn().getBody(String.class);
+       // MLLP framing characters
+        char START_BLOCK = 0x0B;  // Hex for \u000B
+        char END_BLOCK = 0x1C;    // Hex for \u001C
+        char CARRIAGE_RETURN = 0x0D; // Hex for \u000D
+
+        // Wrap message with MLLP framing
+        String framedMessage = START_BLOCK + hl7Message + END_BLOCK + CARRIAGE_RETURN;
+        exchange.getIn().setBody(framedMessage);
     }
 }

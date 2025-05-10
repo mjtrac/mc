@@ -146,6 +146,11 @@
 	  <groupId>org.springframework.boot</groupId>
 	  <artifactId>spring-boot-starter-web</artifactId>
 	</dependency>
+	<dependency>
+	  <groupId>org.apache.camel.springboot</groupId>
+	  <artifactId>camel-http-starter</artifactId>
+	</dependency>
+
 
 
 	<!-- Apache Camel Management for route management -->
@@ -155,7 +160,7 @@
 	  <version>4.10.0</version>
 	</dependency>
 	
-<!-- include springodc so we can browse the api docs in a swagger web ui -->
+<!-- include springdoc so we can browse the api docs in a swagger web ui -->
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-springdoc-starter</artifactId>

@@ -1,0 +1,20 @@
+- route:
+    id: fetch-cda-and-extract-text-once
+    from:
+      uri: "timer:runOnce?repeatCount=1"
+      steps:
+        - setHeader:
+            name: CamelHttpMethod
+            constant: GET
+        - setHeader:
+            name: User-Agent
+            constant: "Mozilla/5.0 (Windows NT 10.0; Wind64; x65) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        - to: https://raw.githubusercontent.com/HL7/C-CDA-Examples/master/Documents/CCD/CCD%202/CCD.xml
+        - convertBodyTo:
+            type: java.lang.String
+        - to: log:received-xml?level=DEBUG
+        - to: xslt:xslt/extract-text.xsl
+        - setHeader:
+            name: CamelFileName
+            simple: CCD-extracted-${date:now:yyyyMMddHHmmssSSS}.html
+        - to: file:/tmp?fileExist=Override
