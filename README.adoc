@@ -65,7 +65,9 @@ and receive routes.
 Routes under src/main/resources/loadedroutes are loaded on startup;
 routes in src/main/resources/unloadedroutes include hello.yaml 
 and hello2.yaml, which just write to the log every two 
-and five seconds.  (These are suitable routes to load via 
+and five seconds, and fetchCDA.yaml, which includes a route that
+goes out and retrieves a sample CDA from HL7 at github and uses xslt to extract
+<text> and the enclosed tables, writing an HTML file to /tmp. (These are suitable routes to load via 
 http://localhost:8080/ui/routes/load or the button on 
 http://localhost:8080/ui/routes.)
 
