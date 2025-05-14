@@ -1,9 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Route Counts</title></head>
+  <head>
+    <title>Logged Body Counts By Route</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+  $(document).ready(function() {
+    $('#routesTable').DataTable();
+  });
+</script>
+    <style>
+      body {
+	  font-family: sans-serif;
+	  background-color: lightgrey;
+      }
+      h1 {
+	  text-align: center;
+      }
+    </style>
+    
+  </head>
 <body>
-<h2>Route Message Counts</h2>
-<table>
+  <h2>Logged Body Counts By Route</h2>
+<p>Note that bodies are logged at the beginning and end of each route, as well as when a route uses the following step:<code> - to: "bean:routeMessageService?method=logCurrentBody"</code>
+</p>
+<p>Route messages are currently logged to a sqlite db named route_messages.db. Use a suitable db browser to work with them.</p>
+<table id="routesTable" border="1">
   <tr><th>Route</th><th>Count</th></tr>
   <tr th:each="entry : ${counts}">
     <td th:text="${entry[0]}"></td>
