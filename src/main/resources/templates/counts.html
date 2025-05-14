@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Route Counts</title></head>
+<body>
+<h2>Route Message Counts</h2>
+<table>
+  <tr><th>Route</th><th>Count</th></tr>
+  <tr th:each="entry : ${counts}">
+    <td th:text="${entry[0]}"></td>
+    <td th:text="${entry[1]}"></td>
+  </tr>
+</table>
+</body>
+</html>

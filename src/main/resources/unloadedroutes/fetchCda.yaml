@@ -1,7 +1,7 @@
 - route:
-    id: fetch-cda-and-extract-text-once
+    id: fetch-cda-and-extract-text
     from:
-      uri: "timer:runOnce?repeatCount=1"
+      uri: "direct:fetch-cda-and-extract-text"
       steps:
         - setHeader:
             name: CamelHttpMethod
@@ -12,6 +12,7 @@
         - to: https://raw.githubusercontent.com/HL7/C-CDA-Examples/master/Documents/CCD/CCD%202/CCD.xml
         - convertBodyTo:
             type: java.lang.String
+        - to: "bean:routeMessageService?method=logCurrentBody"
         - to: log:received-xml?level=DEBUG
         - to: xslt:xslt/extract-text.xsl
         - setHeader:

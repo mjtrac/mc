@@ -27,8 +27,15 @@ spring:
     run:
       #jvmArguments: -Djavax.net.debug=ssl,handshake,certpath
   dataSource:
-    url: jdbc:sqlite:mydata.db
+    #url: jdbc:sqlite:mydata.db
     driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:route-messages.db
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
   thymeleaf:
     prefix: "classpath:/templates/"
     suffix: ".html"

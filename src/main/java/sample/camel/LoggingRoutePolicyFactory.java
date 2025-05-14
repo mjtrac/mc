@@ -21,27 +21,25 @@ import org.apache.camel.spi.RoutePolicyFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map;
+import sample.camel.db.RouteMessageService;
+//import sample.camel.db.RouteMessageRepository;
 //@Component
 public class LoggingRoutePolicyFactory implements RoutePolicyFactory {
 
     @Autowired
-    private ProducerTemplate producerTemplate;
+    private RouteMessageService routeMessageService;
 
 
     @Override
     public RoutePolicy createRoutePolicy(CamelContext camelContext, String routeId, NamedNode definition) {
-        if (routeId != null && routeId != "logToDatabase") {
+        if (routeId != null) {
             return new RoutePolicy() {
 
 		@Override
 		public void onExchangeBegin(Route route, Exchange exchange) {
 		    String body = exchange.getIn().getBody(String.class);
-		    
-		producerTemplate.sendBodyAndHeaders(
-		       "direct:logToDatabase",
-		       body,
-		       Map.of("originalRouteId", (String)(route.getId())));
-		}
+		    routeMessageService.logRouteMessage(route.getId(), body, exchange.getExchangeId());
+     		}
 
                 @Override public void onInit(Route route) {}
                 @Override public void onRemove(Route route) {}
@@ -55,12 +53,8 @@ public class LoggingRoutePolicyFactory implements RoutePolicyFactory {
 		@Override
 		public void onExchangeDone(Route route, Exchange exchange) {
 		    String body = exchange.getIn().getBody(String.class);
-		    producerTemplate.sendBodyAndHeaders(
-		       "direct:logToDatabase",
-		       body,
-		       Map.of("originalRouteId", (String)(route.getId())));
+		    routeMessageService.logRouteMessage(route.getId(), body, exchange.getExchangeId());
 		}
-
 	    };
         }
         return null;

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Route Messages</title></head>
+<body>
+<h2>Messages</h2>
+<table>
+  <tr><th>Exchange ID</th><th>Timestamp</th><th>Additional ID</th><th>Comment</th><th>Body</th></tr>
+  <tr th:each="msg : ${messages}">
+    <td th:text="${msg.exchangeId}"></td>
+    <td th:text="${msg.timestampProcessed}"></td>
+    <td th:text="${msg.additionalId}"></td>
+    <td th:text="${msg.comment}"></td>
+    <td><pre th:text="${msg.body}"></pre></td>
+  </tr>
+</table>
+</body>
+</html>
