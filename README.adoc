@@ -92,6 +92,14 @@ CREATE TABLE IF NOT EXISTS mytable
  route VARCHAR(255)"
  .to("jdbc:dataSource");
 
+On the "jpa" branch you are now in, this is replaced with database file route_messages.db,
+route bodies are logged at the beginning and end of each exchange along with 
+route id, exchange id, and timestamp, and are also logged when a bean is 
+called within the route: 
+----
+- to: "bean:routeMessageService?method=logCurrentBody"
+----
+
 For the sending route to send, place a valid HL7v2 message
 in /tmp/hl7msg.txt.  Once sent, it will be moved
 to /tmp/sentmessages.
