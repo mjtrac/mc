@@ -67,10 +67,19 @@ Routes under src/main/resources/loadedroutes are loaded on startup;
 routes in src/main/resources/unloadedroutes include hello.yaml 
 and hello2.yaml, which just write to the log every two 
 and five seconds, and fetchCDA.yaml, which includes a route that
-goes out and retrieves a sample CDA from HL7 at github and uses xslt to extract
-<text> and the enclosed tables, writing an HTML file to /tmp. (These are suitable routes to load via 
+goes out and retrieves a sample CDA from HL7 at github and
+uses xslt to extract <title> and <text> and <table>s from sections,
+writing an HTML file to /tmp.
+
+(These are suitable routes to load via 
 http://localhost:8080/ui/routes/load or the button on 
 http://localhost:8080/ui/routes.)
+
+Note that the routes display shows exchanges processed during
+the current run, while /ui/db/counts shows how many message
+writes have taken place for each route.  There can be multiple
+message writes for a route, to capture the body at different
+stages.
 
 The preloaded mllp forwarding route can be tested by going
 to util and running python3 mllpreceive.py to start an SSL-secured

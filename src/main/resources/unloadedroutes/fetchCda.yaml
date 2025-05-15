@@ -1,7 +1,7 @@
 - route:
-    id: fetch-cda-and-extract-text
+    id: fetch-cda-and-extract-to-html
     from:
-      uri: "direct:fetch-cda-and-extract-text"
+      uri: "timer:runOnce?repeatCount=1"
       steps:
         - setHeader:
             name: CamelHttpMethod

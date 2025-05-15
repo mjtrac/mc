@@ -1,6 +1,0 @@
-- route:
-    id: "triggerFetchCDAOnce"
-    from:
-      uri: "timer:runOnce?repeatCount=1"
-      steps:
-        - to: "direct:fetch-cda-and-extract-text"
