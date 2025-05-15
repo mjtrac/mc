@@ -1,4 +1,5 @@
 == Camel Example Spring Boot Mitch Connect
+
 ===(using JPA/Hibernate)
 
 This example shows how to receive and forward SSL encrypted
