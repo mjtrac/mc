@@ -1,6 +1,5 @@
 == Camel Example Spring Boot Mitch Connect
-
-===(using JPA/Hibernate)
+=== (using JPA/Hibernate)
 
 This example shows how to receive and forward SSL encrypted
 messages via MLLP. It logs the messages to a SQLite database
