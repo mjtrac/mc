@@ -6,12 +6,12 @@ messages via MLLP. It logs the messages to a SQLite database
 in its toplevel directory.  It also includes sample yaml 
 routes for sending and receiving without SSL.
 
+Login as user "admin" with password "password"
+at http://localhost:8080.
+
 In addition to sending messages to the various routes' ports,
 you can communicate with the application at
 http://localhost:8080/ui/routes and /ui/routes/load.
-
-Everything under /ui requires that you login as user "admin"
-with password "password".
 
 The same functionality is available via
 http://localhost:8080/swagger-ui/index.html
