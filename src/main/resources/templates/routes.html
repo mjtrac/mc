@@ -24,6 +24,7 @@
 </head>
 <body>
   <h1>Mitch Connect</h1>
+  <h2>Routes Dashboard</h2>
   <div th:if="${session.message}">
     <p th:text="${session.message}"></p>
   </div>
@@ -76,36 +77,77 @@
             </tr>
         </tbody>
 </table>
-    <div>The user interface is at /ui/routes.  The api uses /api/routes2 and
-      is most easily accessed at /swagger-ui/index.html (which is not currently
-      password protected.  Password protection is weak right now and will
-    be replaced.</div>
-    <div>The MLLP route receives an encrypted HL7v2 message on one port, forwards it using encryption to another port, and returns the reply from the final port to the original sender.  The truststore and keystore files and passwords are set in the application.yaml file, as are the routes, under camel/mllp/ssl. </div> 
-    <div> The No SSL send and receive routes pick up ports from camel/mllp/nossl
-      </div>
-    <div>Because the pom.xml file includes the dependency
-      camel-spring-boot-starter, yaml routes can use
-      the following components without adding dependencies:
-      <list>
-<li>bean: Invokes methods on Java beans registered in the Camel registry.
-</li><li>browse: Inspects messages received on endpoints that support browsing.
-</li><li>controlbus: Manages and monitors Camel routes.   
-</li><li>dataformat: Uses Camel data formats as regular Camel components.
-</li><li>dataset: Provides data for load and soak testing.
-</li><li>direct: Calls another endpoint within the same Camel context synchronously.   
-</li><li>language: Executes scripts in various languages supported by Camel (e.g., simple, groovy, etc.).   
-</li><li>log: Logs message data.
-</li><li>mock: Mocks endpoints for testing routes.
-</li><li>ref: Routes messages to endpoints looked up dynamically in the Camel registry.   
-</li><li>rest: Exposes and consumes RESTful services.
-</li><li>saga: Implements the Saga pattern for distributed transactions.
-</li><li>scheduler: Generates messages at specified intervals using java.util.concurrent.ScheduledExecutorService.
-</li><li>seda: Asynchronously calls another endpoint within the same JVM.   
-</li><li>stub: Stubs out physical endpoints during development or testing.
-</li><li>timer: Generates messages at specified intervals using java.util.Timer.
-</li><li>validator: Validates message payloads using XML schema.
-</li><li>xpath: Evaluates XPath expressions.
-</li><li>xslt: Transforms XML payloads using XSLT templates.   
+<div>
+  The user interface default is at localhost:8080/ui/routes.
+  The api uses localhost:8080/api/routes2 and
+  is most easily accessed at localhost:8080/swagger-ui/index.html
+  (which is not currently password protected).
+</div>
+<div>
+  Message bodies are written using JPA to route-messages.db,
+  table route_messages. Counts of written records by route
+  are at localhost:8080/ui/db/counts.
+  Message bodies may be written at multiple points in the route,
+  so this does not reflect the number of messages,
+  but a GROUP BY exchange_id will change that.
+</div>
+<div>Password protection is weak right now and will
+  be replaced; there's a keycloak branch at github.
+</div>
+<div>
+  There are three preloaded routes.  Their yaml definitions are in 
+  folders src/main/resources/loadedroutes/no_ssl and ...ssl2.
+  There are also several routes under src/main/resources/unloadedroutes,
+  and they can be loaded via the "load routes" button above.
+</div>
+<div>
+  The MllpSSLForwarding route receives an encrypted HL7v2 message on one port,
+  forwards it using encryption to another port, and returns the reply
+  from the final port to the original sender.  The truststore and keystore files  and passwords are set in src/main/resources/application.yaml,
+  under camel: mllp: ssl:  as are the ports to use.
+  Initial values are set to retrieve from port 15679 and forward to port 15678
+</div> 
+<div>
+  The No SSL send and receive routes pick up ports from
+  src/main/resources/application.yaml at camel: mllp: no_ssl:
+  which are initially set for receiving on 15681 and sending on 15682.
+</div>
+<div>
+  One goal of this project is to provide an Apache Camel "dashboard"
+  that will make some sense to users of Mirth Connect
+  and enable them to write and experiment with routes written in yaml.
+  That's why the preloaded routes involve MLLP, a healthcare-specific
+  protocol.  But Camel is capable of talking to just about everything,
+  and you can get some idea of that at <a href="https://camel.apache.org/components/4.10.x/index.html">https://camel.apache.org/components/4.10.x/index.html</a>
+  Each component is documented, and the Spring Boot Auto-Configuration
+  section will show you dependencies needed (see below).
+</div>
+<div>
+  If you wish to use camel components that are not already built in,
+  you'll need to add their dependencies to the pom.xml file.
+  Because that file includes the dependency
+  camel-spring-boot-starter, yaml routes can use
+  the following components without adding dependencies:
+  <list>
+    <li>bean: Invokes methods on Java beans registered in the Camel registry.
+    </li><li>browse: Inspects messages received on endpoints that support browsing.
+    </li><li>controlbus: Manages and monitors Camel routes.   
+    </li><li>dataformat: Uses Camel data formats as regular Camel components.
+    </li><li>dataset: Provides data for load and soak testing.
+    </li><li>direct: Calls another endpoint within the same Camel context synchronously.   
+    </li><li>language: Executes scripts in various languages supported by Camel (e.g., simple, groovy, etc.).   
+    </li><li>log: Logs message data.
+    </li><li>mock: Mocks endpoints for testing routes.
+    </li><li>ref: Routes messages to endpoints looked up dynamically in the Camel registry.   
+    </li><li>rest: Exposes and consumes RESTful services.
+    </li><li>saga: Implements the Saga pattern for distributed transactions.
+    </li><li>scheduler: Generates messages at specified intervals using java.util.concurrent.ScheduledExecutorService.
+    </li><li>seda: Asynchronously calls another endpoint within the same JVM.   
+    </li><li>stub: Stubs out physical endpoints during development or testing.
+    </li><li>timer: Generates messages at specified intervals using java.util.Timer.
+    </li><li>validator: Validates message payloads using XML schema.
+    </li><li>xpath: Evaluates XPath expressions.
+    </li><li>xslt: Transforms XML payloads using XSLT templates.   
 </div>
 </body>
 </html>
