@@ -42,7 +42,7 @@ public class SecurityConfig {
 				   )
 	    .httpBasic(Customizer.withDefaults())
 	    .formLogin(form -> form
-		       .defaultSuccessUrl("/ui/routes", true) 
+		       .defaultSuccessUrl("/", true) 
 		       .permitAll());
 	return http.build();
     }

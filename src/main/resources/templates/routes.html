@@ -19,6 +19,9 @@
       h1 {
 	  text-align: center;
       }
+      p {
+	  font-size: small;
+      }
     </style>
     
 </head>
@@ -77,42 +80,43 @@
             </tr>
         </tbody>
 </table>
-<div>
+<p>
   The user interface default is at localhost:8080/ui/routes.
   The api uses localhost:8080/api/routes2 and
-  is most easily accessed at localhost:8080/swagger-ui/index.html
+  is most easily accessed at
+  <a href="http://localhost:8080/swagger-ui/index.html">localhost:8080/swagger-ui/index.html</a>.
   (which is not currently password protected).
-</div>
-<div>
+</p>
+<p>
   Message bodies are written using JPA to route-messages.db,
   table route_messages. Counts of written records by route
-  are at localhost:8080/ui/db/counts.
+  are at <a href="http://localhost:8080/ui/db/counts">localhost:8080/ui/db/counts</a>.
   Message bodies may be written at multiple points in the route,
   so this does not reflect the number of messages,
   but a GROUP BY exchange_id will change that.
-</div>
-<div>Password protection is weak right now and will
-  be replaced; there's a keycloak branch at github.
-</div>
-<div>
+</p>
+<p>Password protection is weak right now and will
+  be replaced; see the keycloak branch at github.
+</p>
+<p>
   There are three preloaded routes.  Their yaml definitions are in 
   folders src/main/resources/loadedroutes/no_ssl and ...ssl2.
   There are also several routes under src/main/resources/unloadedroutes,
   and they can be loaded via the "load routes" button above.
-</div>
-<div>
+</p>
+<p>
   The MllpSSLForwarding route receives an encrypted HL7v2 message on one port,
   forwards it using encryption to another port, and returns the reply
   from the final port to the original sender.  The truststore and keystore files  and passwords are set in src/main/resources/application.yaml,
   under camel: mllp: ssl:  as are the ports to use.
   Initial values are set to retrieve from port 15679 and forward to port 15678
-</div> 
-<div>
+</p> 
+<p>
   The No SSL send and receive routes pick up ports from
   src/main/resources/application.yaml at camel: mllp: no_ssl:
   which are initially set for receiving on 15681 and sending on 15682.
-</div>
-<div>
+</p>
+<p>
   One goal of this project is to provide an Apache Camel "dashboard"
   that will make some sense to users of Mirth Connect
   and enable them to write and experiment with routes written in yaml.
@@ -121,8 +125,8 @@
   and you can get some idea of that at <a href="https://camel.apache.org/components/4.10.x/index.html">https://camel.apache.org/components/4.10.x/index.html</a>
   Each component is documented, and the Spring Boot Auto-Configuration
   section will show you dependencies needed (see below).
-</div>
-<div>
+</p>
+<p>
   If you wish to use camel components that are not already built in,
   you'll need to add their dependencies to the pom.xml file.
   Because that file includes the dependency
@@ -148,6 +152,6 @@
     </li><li>validator: Validates message payloads using XML schema.
     </li><li>xpath: Evaluates XPath expressions.
     </li><li>xslt: Transforms XML payloads using XSLT templates.   
-</div>
+</p>
 </body>
 </html>

@@ -1,8 +1,8 @@
 - route:
-    id: log-routename-every-five-seconds
+    id: log-hello2-every-five-seconds
     from:
       uri: "timer:myTimer?period=5000"
       steps:
         - setBody:
             constant: "Hello2"
-        - log: "BODY5: ${body}"
+        - log: "${body}"

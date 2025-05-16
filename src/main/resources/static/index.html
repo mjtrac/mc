@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <title>Mitch Connect</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</script>
+    <script>
+  $(document).ready(function() {
+    $('#routesTable').DataTable();
+  });
+</script>
+    <style>
+      body {
+	  font-family: sans-serif;
+	  background-color: lightgrey;
+      }
+      h1 {
+	  text-align: center;
+      }
+      h2 {
+	  text-align: center;
+      }
+      h3 {
+	  text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to Mitch Connect</h1>
+    <p>
+      This program provides an easy way to run basic Camel routes,
+      which you can think of as Mirth Connect channels or Rhapsody paths.
+      It does not, at least for now, incorporate things like a database browser,
+      given that there are excellent database browsers out there.
+      It also does not incorporate a visual route builder,
+      <a href="https://kaoto.io/">Kaoto</a>
+      is open source and already makes that capability available,
+      or you can construct yaml routes in any text editor.
+    </p>
+    <p>
+      The route dashboard is at
+      <a href="http://localhost:8080/ui/routes">localhost:8080/ui/routes</a> .
+      From there you can load and unload, stop, suspend, and start routes.
+      The api uses localhost:8080/api/routes2 and is most easily accessed at
+  <a href="http://localhost:8080/swagger-ui/index.html">localhost:8080/swagger-ui/index.html</a>.
+    </p>
+    <p>
+      Message bodies are written using JPA to SQLite3 file route-messages.db,
+      table route_messages. Counts of written records by route are at 
+      <a href="http://localhost:8080/ui/db/counts">localhost:8080/ui/db/counts</a>.
+      (Get the excellent open-source <a href="https://sqlitebrowser.org/">SQLite browser</a> to query the table.)  And because the project uses Spring and JPA,
+      you can easily swap out for PostgreSQL or other db's in the configuration.
+      Message bodies may be written at multiple points in the route,
+      so counts do not currently reflect the number of messages,
+      but a GROUP BY exchange_id will change that.
+    </p>
+    <p>Password protection is weak right now and will
+      be replaced; see the keycloak branch at github.
+    </p>
+    <p>
+      There are three preloaded routes.  Their yaml definitions are in 
+      folders [root]/src/main/resources/loadedroutes/no_ssl and ...ssl2.
+      There are also several routes under [root]/src/main/resources/unloadedroutes,
+      and they can be loaded via the "load routes" button above.
+    </p>
+    <p>
+      The MllpSSLForwarding route receives an encrypted HL7v2 message
+      on one port,
+      forwards it using encryption to another port, and returns the reply
+      from the final port to the original sender.
+      The truststore and keystore files and passwords are set in
+      [root]/src/main/resources/application.yaml,
+  under camel: mllp: ssl:  as are the ports to use.
+  Initial values are set to retrieve from port 15679 and forward to port 15678
+</p> 
+<p>
+  The No SSL send and receive routes pick up ports from
+  [root]/src/main/resources/application.yaml at camel: mllp: no_ssl:
+  which are initially set for receiving on 15681 and sending on 15682.
+</p>
+<p>
+  One goal of this project is to provide an Apache Camel "dashboard"
+  that will make some sense to users of Mirth Connect
+  and enable them to write and experiment with routes written in yaml.
+  That's why the preloaded routes involve MLLP, a healthcare-specific
+  protocol.  But Camel is capable of talking to just about everything,
+  and you can get some idea of that at <a href="https://camel.apache.org/components/4.10.x/index.html">https://camel.apache.org/components/4.10.x/index.html</a>
+  Each component is documented, and the Spring Boot Auto-Configuration
+  section will show you dependencies needed (see below).
+</p>
+<h3>Logging</h3>
+    <p>Log messages are written to [root]/logs/mitchconnect.log.
+    </p>
+<h3>Camel components</h3>
+<p>
+  If you wish to use camel components that are not already built in,
+  you'll need to add their dependencies to the pom.xml file.
+  Because that file includes the dependency
+  camel-spring-boot-starter, yaml routes can use
+  the following components without adding dependencies:
+  <list>
+    <li>bean: Invokes methods on Java beans registered in the Camel registry.
+    </li><li>browse: Inspects messages received on endpoints that support browsing.
+    </li><li>controlbus: Manages and monitors Camel routes.   
+    </li><li>dataformat: Uses Camel data formats as regular Camel components.
+    </li><li>dataset: Provides data for load and soak testing.
+    </li><li>direct: Calls another endpoint within the same Camel context synchronously.   
+    </li><li>language: Executes scripts in various languages supported by Camel (e.g., simple, groovy, etc.).   
+    </li><li>log: Logs message data.
+    </li><li>mock: Mocks endpoints for testing routes.
+    </li><li>ref: Routes messages to endpoints looked up dynamically in the Camel registry.   
+    </li><li>rest: Exposes and consumes RESTful services.
+    </li><li>saga: Implements the Saga pattern for distributed transactions.
+    </li><li>scheduler: Generates messages at specified intervals using java.util.concurrent.ScheduledExecutorService.
+    </li><li>seda: Asynchronously calls another endpoint within the same JVM.   
+    </li><li>stub: Stubs out physical endpoints during development or testing.
+    </li><li>timer: Generates messages at specified intervals using java.util.Timer.
+    </li><li>validator: Validates message payloads using XML schema.
+    </li><li>xpath: Evaluates XPath expressions.
+    </li><li>xslt: Transforms XML payloads using XSLT templates.   
+</p>
+<h3>About yaml</h3><p>
+    <p>Keep in mind that indentation matters in yaml.</p>
+    <p><a href="https://github.com/apache/camel-spring-boot-examples/blob/main/aot-basic/routes/demo-route.camel.yaml">Here</a>
+      is an example from the extremely helpful camel-spring-boot-examples at <a href="https://github.com/apache/camel-spring-boot-examples/">GitHub</a>.
+      <a href="https://docs.redhat.com/en/documentation/red_hat_build_of_apache_camel_for_spring_boot/3.20/html/camel_spring_boot_reference/csb-camel-yaml-dsl-component-starter#defining_a_route">Here</a> is one basic intro to get you started, and you can always look at the sample routes under [root]/src/main/resources.,/p>
+    <p>You can also ask the various AI chatbots to do up a simple yaml route,
+      and see what it generates.</p>
+    <h2><a href="/ui/routes">Onwards to the dashboard?</a></h2>
+    
+</body>
+</html>
