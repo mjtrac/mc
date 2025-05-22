@@ -15,11 +15,11 @@
  */
 package sample.camel.db;
 
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.apache.camel.Exchange;
-import sample.camel.db.RouteMessage;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RouteMessageService {

@@ -28,7 +28,5 @@ public class MllpAckProcessor implements Processor{
         Message in = exchange.getIn();
         byte[] ack = in.getBody(byte[].class); // Get the acknowledgement
 	exchange.setProperty("CamelMllpAcknowledgement",ack);
-        exchange.getOut().setBody(ack); //Set the acknowledgement to return to the original sender.
-	System.out.println("processAck: " + ack.length);
     }
 }

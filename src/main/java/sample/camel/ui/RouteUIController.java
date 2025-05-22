@@ -15,48 +15,34 @@
  */
 package sample.camel.ui;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.camel.CamelContext;
-import org.apache.camel.Route;
-import org.apache.camel.RoutesBuilder;
-import org.apache.camel.api.management.ManagedCamelContext;
-import org.apache.camel.api.management.mbean.ManagedRouteMBean;
-import org.apache.camel.api.management.mbean.ManagedCamelContextMBean;
-import org.apache.camel.model.ModelCamelContext;
-import org.apache.camel.spi.Resource;
-import org.apache.camel.spi.RoutesBuilderLoader;
 import org.apache.camel.support.jsse.SSLContextParameters;
-import org.apache.camel.support.ResourceSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import javax.management.MalformedObjectNameException;
-import java.lang.management.ManagementFactory;
 import sample.camel.services.RouteInfoService;
 import sample.camel.services.RouteLoaderService;
-import sample.camel.services.SslUtils;
 import sample.camel.services.SslUpdateRequest;
+import sample.camel.services.SslUtils;
 
 @Controller
 @RequestMapping("/ui")
@@ -66,9 +52,6 @@ public class RouteUIController {
     
     @Autowired
     private CamelContext camelContext;
-
-    @Autowired
-    private ModelCamelContext modelCamelContext;
 
     @Autowired
     private AtomicReference<SSLContextParameters> sslRef;
@@ -81,7 +64,6 @@ public class RouteUIController {
 
     @GetMapping("/")
     public String listRoutesToUI(Model model) {
-	    String contextId = camelContext.getName();
 	    List<Map<String, List<String>>> routes = routeInfoService.getRouteDetailsAsMapIdToList();
 	    model.addAttribute("routes", routes);
         return "routes";  // Points to src/main/resources/templates/routes.html
@@ -90,7 +72,6 @@ public class RouteUIController {
     // List all routes using Thymeleaf
     @GetMapping("/routes")
     public String listRoutesWithT(Model model) {
-	    String contextId = camelContext.getName();
 	    List<Map<String, List<String>>> routes = routeInfoService.getRouteDetailsAsMapIdToList();
 	    model.addAttribute("routes", routes);
         return "routes";  // Points to src/main/resources/templates/routes.html
@@ -176,7 +157,7 @@ public class RouteUIController {
 	    routeLoaderService.addRouteFromYaml(fileInputStream);
 	    return "redirect:/ui/routes";
 	} catch (Exception e) {
-	    e.printStackTrace();
+	
 	    return "redirect:/ui/routes";
 	    
 	    }

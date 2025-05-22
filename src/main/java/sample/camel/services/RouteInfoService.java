@@ -15,19 +15,15 @@
  */
 package sample.camel.services;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.Route;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.apache.camel.api.management.ManagedCamelContext;
-import org.apache.camel.api.management.mbean.ManagedRouteMBean;
-import org.apache.camel.spi.ManagementObjectStrategy;
-import org.apache.camel.spi.ManagementStrategy;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.stream.Collectors;
-import java.util.Collections;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.api.management.ManagedCamelContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RouteInfoService {

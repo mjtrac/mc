@@ -15,12 +15,14 @@
  */
 package sample.camel;
 
-import org.apache.camel.*;
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.NamedNode;
+import org.apache.camel.Route;
 import org.apache.camel.spi.RoutePolicy;
 import org.apache.camel.spi.RoutePolicyFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.Map;
+
 import sample.camel.db.RouteMessageService;
 //import sample.camel.db.RouteMessageRepository;
 //@Component

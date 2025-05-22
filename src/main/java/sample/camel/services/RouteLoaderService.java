@@ -15,29 +15,18 @@
  */
 package sample.camel.services;
 
+import java.io.InputStream;
+import java.util.UUID;
+
 import org.apache.camel.CamelContext;
-import org.apache.camel.Route;
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.spi.RoutesLoader;
 import org.apache.camel.spi.Resource;
+import org.apache.camel.spi.RoutesLoader;
 import org.apache.camel.support.PluginHelper;
 import org.apache.camel.support.ResourceHelper;
-import org.apache.camel.model.RouteDefinition;
-import org.apache.camel.model.RoutesDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
-import java.util.Map;
-import java.util.UUID;
-import java.util.ArrayList;
-import java.io.ByteArrayOutputStream;
-import org.apache.commons.io.input.TeeInputStream;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.IOException;
 
 @Service
 public class RouteLoaderService {
@@ -50,11 +39,9 @@ public class RouteLoaderService {
 
     public void addRouteFromYaml(InputStream fileInputStream) throws Exception {
 	RoutesLoader loader;
-	Resource resource;
-	Route route;
 	byte[] buffer = new byte[1024];
         int bytesRead;
-	String allContent = new String("");
+	String allContent = "";
 	//camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));
         // Read the file input stream buffer by buffer
         while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -90,13 +77,15 @@ public class RouteLoaderService {
 
 	String uuid = UUID.randomUUID().toString();
 
-	if(type.equals("xml")) {
-	    return ResourceHelper.fromString("route_" + uuid + ".xml", route);
-	} else if(type.equals("yaml")) {
-	    return ResourceHelper.fromString("route_" + uuid + ".yaml", route);
-	} else {
-	    System.out.println("unknown route format");
-	}
+        switch (type) {
+            case "xml":
+                return ResourceHelper.fromString("route_" + uuid + ".xml", route);
+            case "yaml":
+                return ResourceHelper.fromString("route_" + uuid + ".yaml", route);
+            default:
+                System.out.println("unknown route format");
+                break;
+        }
 	return null;
     }
 }

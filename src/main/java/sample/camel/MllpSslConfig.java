@@ -16,24 +16,13 @@
 
 package sample.camel;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.apache.camel.support.jsse.SSLContextParameters;
-import org.apache.camel.support.jsse.KeyStoreParameters;
 import org.apache.camel.support.jsse.KeyManagersParameters;
+import org.apache.camel.support.jsse.KeyStoreParameters;
+import org.apache.camel.support.jsse.SSLContextParameters;
 import org.apache.camel.support.jsse.TrustManagersParameters;
-import org.apache.camel.support.jsse.CipherSuitesParameters;
-import java.util.List;
-
-// for potential exceptions (not used)
-import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MllpSslConfig {

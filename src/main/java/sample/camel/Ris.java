@@ -19,12 +19,14 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
 import org.apache.camel.api.management.ManagedCamelContext;
 import org.apache.camel.api.management.mbean.ManagedRouteMBean;
-import org.apache.camel.spi.ManagementObjectStrategy;
-import org.apache.camel.spi.ManagementStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Ris {
+
+    private static final Logger logger = LoggerFactory.getLogger(Ris.class);
 
     private final CamelContext camelContext;
 
@@ -45,17 +47,13 @@ public class Ris {
             ManagedRouteMBean routeMBean = (ManagedRouteMBean) objectStrategy
                     .getManagedObjectForRoute(camelContext, r);
 	    */
-	    System.out.println(routeMBean);
+            // Log the exception using a logger
+            logger.error("An error occurred while retrieving route metrics");
 	    System.out.println(routeMBean.getExchangesTotal());
-            if (routeMBean != null) {
-                // Return the number of exchanges completed for the route
-                return routeMBean.getExchangesTotal();
-            } else {
-                // If the MBean is null, something went wrong
-                return -1;
-            }
+            // Return the number of exchanges completed for the route
+            return routeMBean.getExchangesTotal();
         } catch (Exception e) {
-            e.printStackTrace();
+
             return -1; // Handle any exceptions (log them in production)
         }
     }

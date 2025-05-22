@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MitchConnect<mc>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "sample.camel.MitchConnect",
+            "projectName": "mc",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

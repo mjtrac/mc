@@ -15,11 +15,11 @@
  */
 package sample.camel;
 
-import ca.uhn.hl7v2.model.Message;
-import ca.uhn.hl7v2.util.Terser;
-import org.apache.camel.Exchange;
 import org.apache.camel.Handler;
 import org.springframework.stereotype.Component;
+
+import ca.uhn.hl7v2.model.Message;
+import ca.uhn.hl7v2.util.Terser;
 
 @Component("terserUtil")
 public class TerserUtil  {
