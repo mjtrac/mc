@@ -86,14 +86,14 @@ to util and running python3 mllpreceive.py to start an SSL-secured
 listener on port 15678 and then, in another shell,
 running python3 mllpsend.py to send with SSL to port 15679.
 
-All message initial bodies are logged to a database table via
+All message initial bodies are written to a database table via
 "RoutePolicy." 
 As distributed in this jda branch, the database is a SQLite3
 file located in the root folder as route-messages.db, which is
 managed by Spring JPA and Hibernate.
 
-Route bodies are logged at the beginning and end of each exchange along with 
-route id, exchange id, and timestamp, and are also logged when a bean is 
+Route bodies are written at the beginning and end of each exchange along with 
+route id, exchange id, and timestamp, and are also written when a bean is 
 called within the route: 
 ----
 - to: "bean:routeMessageService?method=logCurrentBody(${exchange},'more id')"
