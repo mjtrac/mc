@@ -39,11 +39,12 @@ public class RouteMessageService {
 	repo.save(entity);	
     }
 
-    public void logCurrentBody(Exchange exchange) {
+    public void logCurrentBody(Exchange exchange, String additional_id) {
 	RouteMessage entity = new RouteMessage();
 	entity.setRouteId(exchange.getFromRouteId());
 	entity.setExchangeId(exchange.getExchangeId());
 	entity.setBody(exchange.getIn().getBody(String.class));
+	entity.setAdditionalId(additional_id);
 	entity.setTimestampProcessed(LocalDateTime.now());
 	repo.save(entity);	
     }

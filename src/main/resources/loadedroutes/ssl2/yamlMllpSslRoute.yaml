@@ -3,7 +3,10 @@
 - route:
     id: MllpSSLForwardingRoute
     from:
-      # {{ enclosed }} values defined in application.yaml
+      # {{ enclosed }} values defined in application.yaml.
+      # mysslContextParameters defined in java file
+      # src/main/java/sample/camel/MllpSslConfig.java
+      # bean mysslContextParameters()
       uri: "mllp://{{camel.mllp.ssl.inbound.host}}:{{camel.mllp.ssl.inbound.port}}?autoAck=false&sslContextParameters=#mysslContextParameters"
       steps:
         # Capture message body in header

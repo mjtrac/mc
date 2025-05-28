@@ -21,12 +21,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import java.util.concurrent.atomic.AtomicReference;
 import org.apache.camel.support.jsse.SSLContextParameters;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 //CHECKSTYLE:OFF
 /**
  * A sample Spring Boot application that starts the Camel routes.
  */
 @SpringBootApplication
+@EnableScheduling
 public class MitchConnect {
 
     /**

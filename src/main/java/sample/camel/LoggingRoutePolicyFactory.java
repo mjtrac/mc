@@ -24,14 +24,15 @@ import org.apache.camel.spi.RoutePolicyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sample.camel.db.RouteMessageService;
-//import sample.camel.db.RouteMessageRepository;
-//@Component
+import sample.camel.services.RouteCountUpdateService;
+
 public class LoggingRoutePolicyFactory implements RoutePolicyFactory {
 
     @Autowired
     private RouteMessageService routeMessageService;
 
-
+    @Autowired RouteCountUpdateService routeCountUpdateService;
+    
     @Override
     public RoutePolicy createRoutePolicy(CamelContext camelContext, String routeId, NamedNode definition) {
         if (routeId != null) {
@@ -40,7 +41,8 @@ public class LoggingRoutePolicyFactory implements RoutePolicyFactory {
 		@Override
 		public void onExchangeBegin(Route route, Exchange exchange) {
 		    String body = exchange.getIn().getBody(String.class);
-		    routeMessageService.logRouteMessage(route.getId(), body, exchange.getExchangeId());
+		    routeMessageService.logCurrentBody(exchange, "begin");
+		    //routeMessageService.logRouteMessage(route.getId(), body, exchange.getExchangeId());
      		}
 
                 @Override public void onInit(Route route) {}
@@ -55,7 +57,8 @@ public class LoggingRoutePolicyFactory implements RoutePolicyFactory {
 		@Override
 		public void onExchangeDone(Route route, Exchange exchange) {
 		    String body = exchange.getIn().getBody(String.class);
-		    routeMessageService.logRouteMessage(route.getId(), body, exchange.getExchangeId());
+		    routeMessageService.logCurrentBody(exchange, "done");
+		    routeCountUpdateService.pushStats(route);
 		}
 	    };
         }

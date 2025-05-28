@@ -15,21 +15,27 @@
  */
 package sample.camel.services;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.*;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Route;
 import org.apache.camel.api.management.ManagedCamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+
 
 @Service
 public class RouteInfoService {
 
     @Autowired
     private CamelContext camelContext;
+
     public List<Map<String, List<String>>> getRouteDetailsAsMapIdToList() {
 	    ManagedCamelContext managed = camelContext.getCamelContextExtension().getContextPlugin(ManagedCamelContext.class);
 
@@ -42,7 +48,6 @@ public class RouteInfoService {
 			    String.valueOf(managed.getManagedRoute(r.getId()).getExchangesCompleted()),
 			    String.valueOf(managed.getManagedRoute(r.getId()).getExchangesFailed()),
 			    String.valueOf(managed.getManagedRoute(r.getId()).getExchangesInflight())
-			    /* String.valueOf(999L)*/
 				   )
             );
             return routeInfo;

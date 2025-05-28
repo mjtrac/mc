@@ -6,11 +6,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script>
-  $(document).ready(function() {
-    $('#routesTable').DataTable();
-  });
-</script>
     <style>
       body {
 	  font-family: sans-serif;
@@ -52,14 +47,18 @@
             </tr>
         </thead>
         <tbody>
-<tr th:each="routeMap : ${routes}">
-                <th:block th:each="entry : ${routeMap.entrySet()}">
+	  <th:block th:each="routeMap : ${routes}">
+	  <tr 
+	      th:each="entry : ${routeMap.entrySet()}"
+	      th:attr="data-route-id=${entry.key}"
+	      >
+                <th:block >
                     <td th:text="${entry.key}"></td>
                     <td th:text="${entry.value[0]}"></td>
                     <td th:text="${entry.value[1]}"></td>
-                    <td th:text="${entry.value[2]}"></td>
-                    <td th:text="${entry.value[3]}"></td>
-                    <td th:text="${entry.value[4]}"></td>
+                    <td class="exchangesCompleted" th:text="${entry.value[2]}"></td>
+                    <td class="exchangesFailed" th:text="${entry.value[3]}"></td>
+                    <td class="exchangesInflight" th:text="${entry.value[4]}"></td>
                     <td>
 		      <div style="display: flex; gap: 1rem;">
                         <form th:action="@{/ui/routes/{routeId}/start(routeId=${entry.key})}" method="post">
@@ -77,7 +76,8 @@
 			</div>
                     </td>
                 </th:block>
-            </tr>
+          </tr>
+	  </th:block>
         </tbody>
 </table>
 <p>
@@ -153,5 +153,46 @@
     </li><li>xpath: Evaluates XPath expressions.
     </li><li>xslt: Transforms XML payloads using XSLT templates.   
 </p>
+ 
+    <script>
+      $(document).ready(function() {
+	  $('#routesTable').DataTable();
+	  
+          const socket = new WebSocket("ws://localhost:8080/ws/route-stats");
+	  
+          socket.onopen = function () {
+              console.log("WebSocket connection opened");
+          };
+
+          socket.onmessage = function (event) {
+	      // the event data will be a single json map
+	      // with the routeId and exchangesCompleted as keys.
+	      // We only want to update the exchangesCompleted
+	      // on one row, the one with the data-route-id set
+	      // to the incoming route-id.  This survives sorting.
+              const data = JSON.parse(event.data);
+              console.log("Broadcast received: " + data);
+
+	      const routeId = data.routeId;
+	      const theRow = $(`#routesTable tbody tr[data-route-id='${routeId}']`);
+	      // theRow is a jquery object, not a DOM object
+	      if (theRow) {
+		  console.log(routeId + " matched.");
+		  theRow.find(".exchangesCompleted").text(data.exchangesCompleted);
+		  theRow.find(".exchangesFailed").text(data.exchangesFailed);
+		  theRow.find(".exchangesInflight").text(data.exchangesInflight);
+	      }
+	  };
+	  
+          socket.onclose = function () {
+              console.warn("WebSocket connection closed");
+          };
+
+          socket.onerror = function (error) {
+              console.error("WebSocket error:", error);
+          };
+      });
+</script >
+
 </body>
 </html>

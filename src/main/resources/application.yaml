@@ -9,6 +9,11 @@ logging:
     console: "" # Console logging disabled
     
 management:
+  enabled: true
+  jmxAgent: true
+  jmx:
+    statistic-enabled: true
+    statistics-enabled: true
   endpoints:
     web:
       exposure:
@@ -16,8 +21,13 @@ management:
           - "prometheus"
           - "camelroutes"
           - "metrics"
-    metrics:
-      enabled: true
+  metrics:
+    enabled: true
+
+
+micrometer:
+  enabled: true
+  route-metrics: true
 
 server:
   port: 8080
@@ -81,15 +91,6 @@ camel:
         host: TBD
         port: TBD
       
-  management:
-    enabled: true
-    jmxAgent: true
-    jmx:
-      statistic-enabled: true
-      statistics-enabled: true
-  micrometer:
-    enabled: false #true
-    route-metrics: false #true
 
 #  netty:
 #    ssl:
