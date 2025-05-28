@@ -96,7 +96,7 @@ Route bodies are logged at the beginning and end of each exchange along with
 route id, exchange id, and timestamp, and are also logged when a bean is 
 called within the route: 
 ----
-- to: "bean:routeMessageService?method=logCurrentBody"
+- to: "bean:routeMessageService?method=logCurrentBody(${exchange},'more id')"
 ----
 
 Timestamps are milliseconds into the unix epoch, and SQLite will

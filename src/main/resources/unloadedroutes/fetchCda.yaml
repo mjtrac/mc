@@ -12,7 +12,7 @@
         - to: https://raw.githubusercontent.com/HL7/C-CDA-Examples/master/Documents/CCD/CCD%202/CCD.xml
         - convertBodyTo:
             type: java.lang.String
-        - to: "bean:routeMessageService?method=logCurrentBody"
+        - to: "bean:routeMessageService?method=logCurrentBody(${exchange},'converted')"
         - to: log:received-xml?level=DEBUG
         - to: xslt:xslt/extract-text.xsl
         - setHeader:
