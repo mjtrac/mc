@@ -26,6 +26,9 @@
 <body>
 
 <h2>Load a YAML Route</h2>
+<div th:if="${errorMessage}">
+  <p class="error" th:text="${errorMessage}"></p>
+</div>
 
 <form action="/ui/routes/loadfile" method="POST" enctype="multipart/form-data">
   <label for="yamlFile">Path to yaml file with route:</label>
@@ -37,18 +40,20 @@
 
 <form id="yamlForm" action="/ui/routes/loadtext" method="POST">
   <div id="yaml-editor"></div>
-  <textarea name="yaml_content" id="yamlContent" style="display: none;"></textarea>
+  <textarea name="yaml_content" id="yamlContent" th:text="${yaml_content}" style="display: none;"></textarea>
   <button type="submit">Submit YAML route from editor</button>
 
 
 <script>
+  const form = document.getElementById('yamlForm');
+  const textarea = form.querySelector('textarea[name="yaml_content"]');
+  const init_content = textarea.value;
   var yamlEditor = CodeMirror(document.getElementById("yaml-editor"), {
+      value: init_content,
       mode: "yaml",
       lineNumbers: true,
       theme: "default" // You can choose other themes
   });
-  const form = document.getElementById('yamlForm');
-  const textarea = form.querySelector('textarea[name="yaml_content"]');
 
   form.addEventListener('submit', function(event) {
       const yamlContent = yamlEditor.getValue();

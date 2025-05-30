@@ -52,12 +52,8 @@ public class RouteLoaderService {
 	
 	loader = PluginHelper.getRoutesLoader(camelContext);
 
-	try {
-	    loader.loadRoutes(setResource(allContent,"yaml"));
-	    LOG.info(allContent);
-	} catch (Exception e) {
-	    LOG.error("Could not load route: " + e.getMessage());
-	}
+	loader.loadRoutes(setResource(allContent,"yaml"));
+	// let generated exceptions be processed by caller
         /*
 	  System.out.println("File Content:\n" + allContent);
 	camelContext.getRoutes().forEach(r -> System.out.println("Loaded route: " + r.getId()));

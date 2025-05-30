@@ -1,0 +1,8 @@
+- route:
+    id: log-hello-every-two-seconds
+    from:
+      uri: "timer:myTimer?period=2000"
+      steps:
+        - setBody:
+            consant: "Hello"
+        - log: "${body}"

@@ -135,7 +135,7 @@ public class RouteUIController {
     }
     
     @PostMapping("/routes/loadtext")
-    public String loadRouteText(@RequestParam("yaml_content") String yamlContent, RedirectAttributes redirectAttributes) {
+    public String loadRouteText(@RequestParam("yaml_content") String yamlContent, Model model) {
 	try (InputStream is = new ByteArrayInputStream(yamlContent.getBytes(StandardCharsets.UTF_8))) {
 	    routeLoaderService.addRouteFromYaml(is);
 	    LOG.info("RouteLoaderService no exception");
@@ -143,9 +143,10 @@ public class RouteUIController {
 	} catch (Exception e) {
 	    //LOG(e.printStackTrace());
 	    //LOG.error(e);
-	    redirectAttributes.addFlashAttribute("error",e.getMessage());
+	    model.addAttribute("errorMessage",e.getMessage());
+	    model.addAttribute("yaml_content", yamlContent);
 	    LOG.warn("RouteLoaderService " + e.getMessage());
-	    return "redirect:/ui/routes";
+	    return "route-form";
 	}
 	
     }
@@ -157,8 +158,9 @@ public class RouteUIController {
 	    routeLoaderService.addRouteFromYaml(fileInputStream);
 	    return "redirect:/ui/routes";
 	} catch (Exception e) {
-	
-	    return "redirect:/ui/routes";
+	    model.addAttribute("errorMessage",e.getMessage());
+	    LOG.warn("RouteLoaderService " + e.getMessage());
+	    return "route-form";
 	    
 	    }
     }
