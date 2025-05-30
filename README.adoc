@@ -28,8 +28,9 @@ to load a valid yaml file route
 or enter valid yaml text to create a route.  (Kaoto is a
 wonderful tool for creating yaml routes.)
 
-If the entered yaml is not valid it will not load but there
-will be no message.  If it is valid you will see it when
+If the entered yaml is not valid it will not load and the loading form
+will show the initial exception that prevented loading.
+If it is valid you will see it when
 your browser is redirected to /ui/routes.  Because the pom.xml
 file includes the dependency camel-spring-boot-starter,
 yaml routes should be able to use the following components without
